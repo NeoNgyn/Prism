@@ -1,46 +1,109 @@
 import { useState } from 'react';
-import { Link, useLocation } from 'react-router-dom';
+import './Header.css';
 
-export default function Header() {
-  const [mobileOpen, setMobileOpen] = useState(false);
-  const location = useLocation();
+interface HeaderProps {
+  currentPage: string;
+  onNavigate: (page: string) => void;
+}
 
-  const isActive = (path: string) => location.pathname === path ? 'active' : '';
+export const Header = ({ currentPage, onNavigate }: HeaderProps) => {
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+
+  const handleNavClick = (page: string) => {
+    onNavigate(page);
+    setMobileMenuOpen(false);
+  };
 
   return (
     <header>
       <div className="container">
-        <nav className="nav">
-          <Link to="/" className="brand">
-            <div className="logo"></div>
+        <div className="nav">
+          <a className="brand" href="#home" onClick={(e) => { e.preventDefault(); handleNavClick('home'); }} aria-label="Về trang chủ">
+            <div className="logo" aria-hidden="true"></div>
             <div>
-              <div className="title">Êm Dạ Mode</div>
-              <div className="tag">Healthy Gen Z</div>
+              <div style={{ display: 'flex', gap: '10px', alignItems: 'center', flexWrap: 'wrap' }}>
+                <span className="title">Êm Dạ Mode</span>
+                <span className="badge">Team Prism</span>
+              </div>
+              <div className="tag">Bật mode Êm Dạ, nhịp sống mượt mà</div>
             </div>
-          </Link>
-          <div className="nav-links">
-            <Link to="/" className={isActive('/')}>Trang chủ</Link>
-            <Link to="/about" className={isActive('/about')}>About us</Link>
-            <Link to="/qna" className={isActive('/qna')}>Q&A</Link>
-            <Link to="/test" className={isActive('/test')}>Test</Link>
-            <Link to="/contact" className={`btn primary ${isActive('/contact')}`}>
-              Liên hệ chúng tôi
-            </Link>
+          </a>
+
+          <nav className="nav-links" aria-label="Điều hướng chính">
+            <a 
+              className={currentPage === 'home' ? 'active' : ''} 
+              href="#home" 
+              onClick={(e) => { e.preventDefault(); handleNavClick('home'); }}
+            >
+              Trang chủ
+            </a>
+            <a 
+              className={currentPage === 'about' ? 'active' : ''} 
+              href="#about" 
+              onClick={(e) => { e.preventDefault(); handleNavClick('about'); }}
+            >
+              About us
+            </a>
+            <a 
+              className={currentPage === 'qna' ? 'active' : ''} 
+              href="#qna" 
+              onClick={(e) => { e.preventDefault(); handleNavClick('qna'); }}
+            >
+              Q&A
+            </a>
+            <a 
+              className={currentPage === 'test' ? 'active' : ''} 
+              href="#test" 
+              onClick={(e) => { e.preventDefault(); handleNavClick('test'); }}
+            >
+              Test
+            </a>
+            <a 
+              className={currentPage === 'contact' ? 'active' : ''} 
+              href="#contact" 
+              onClick={(e) => { e.preventDefault(); handleNavClick('contact'); }}
+            >
+              Liên hệ
+            </a>
+          </nav>
+
+          <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+            <a className="btn primary" href="#test" onClick={(e) => { e.preventDefault(); handleNavClick('test'); }} title="Làm bài test">
+              <span className="icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none">
+                  <path d="M9 11h6M9 15h4" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/>
+                  <path d="M7 3h10a2 2 0 0 1 2 2v16l-4-2-4 2-4-2-4 2V5a2 2 0 0 1 2-2Z" stroke="currentColor" strokeWidth="2" strokeLinejoin="round"/>
+                </svg>
+              </span>
+              Bắt đầu Test
+            </a>
+            <button 
+              className="btn ghost menu-btn" 
+              id="menuBtn" 
+              type="button" 
+              aria-expanded={mobileMenuOpen}
+              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+            >
+              <span className="icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none">
+                  <path d="M4 7h16M4 12h16M4 17h16" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/>
+                </svg>
+              </span>
+              Menu
+            </button>
           </div>
-          <button className="btn menu-btn" onClick={() => setMobileOpen(!mobileOpen)}>
-            <span className="icon">☰</span>
-          </button>
-        </nav>
-        {mobileOpen && (
-          <div className="mobile-panel open">
-            <Link to="/" onClick={() => setMobileOpen(false)}>Trang chủ</Link>
-            <Link to="/about" onClick={() => setMobileOpen(false)}>About us</Link>
-            <Link to="/qna" onClick={() => setMobileOpen(false)}>Q&A</Link>
-            <Link to="/test" onClick={() => setMobileOpen(false)}>Test</Link>
-            <Link to="/contact" onClick={() => setMobileOpen(false)}>Liên hệ chúng tôi</Link>
+        </div>
+
+        {mobileMenuOpen && (
+          <div className="mobile-panel open" aria-label="Menu di động">
+            <a href="#home" onClick={(e) => { e.preventDefault(); handleNavClick('home'); }}>Trang chủ</a>
+            <a href="#about" onClick={(e) => { e.preventDefault(); handleNavClick('about'); }}>About us</a>
+            <a href="#qna" onClick={(e) => { e.preventDefault(); handleNavClick('qna'); }}>Q&A</a>
+            <a href="#test" onClick={(e) => { e.preventDefault(); handleNavClick('test'); }}>Test</a>
+            <a href="#contact" onClick={(e) => { e.preventDefault(); handleNavClick('contact'); }}>Liên hệ</a>
           </div>
         )}
       </div>
     </header>
   );
-}
+};

@@ -1,0 +1,122 @@
+.test-shell { 
+  display:grid; 
+  grid-template-columns: 1fr .9fr; 
+  gap: 14px; 
+  margin-top: 12px; 
+}
+
+@media (max-width: 900px) { 
+  .test-shell { 
+    grid-template-columns: 1fr; 
+  } 
+}
+
+.progress {
+  height: 10px;
+  background: rgba(255,255,255,.08);
+  border: 1px solid rgba(255,255,255,.12);
+  border-radius: 999px;
+  overflow:hidden;
+}
+
+.progress > div { 
+  height:100%; 
+  width:0%; 
+  background: linear-gradient(90deg, rgba(110,231,200,.8), rgba(122,166,255,.8)); 
+}
+
+.step {
+  margin-top: 12px;
+  border-radius: var(--r);
+  border: 1px solid rgba(255,255,255,.12);
+  background: rgba(255,255,255,.05);
+  padding: 18px;
+}
+
+.q-title { 
+  margin: 14px 0 8px; 
+  font-weight: 950; 
+  font-size: 16px; 
+  letter-spacing:.2px; 
+}
+
+.options { 
+  display:flex; 
+  flex-direction:column; 
+  gap: 10px; 
+  margin-top: 10px; 
+}
+
+.opt {
+  display:flex; 
+  align-items:flex-start; 
+  gap: 10px;
+  padding: 12px 12px;
+  border-radius: 14px;
+  border: 1px solid rgba(255,255,255,.14);
+  background: rgba(11,18,38,.68);
+  cursor:pointer;
+}
+
+.opt:hover { 
+  background: rgba(255,255,255,.08); 
+}
+
+.opt input { 
+  margin-top: 3px; 
+}
+
+.nav-row { 
+  display:flex; 
+  gap: 10px; 
+  justify-content:space-between; 
+  align-items:center; 
+  margin-top: 14px; 
+}
+
+.result {
+  border-radius: var(--r2);
+  border: 1px solid rgba(255,255,255,.12);
+  background: linear-gradient(180deg, rgba(255,255,255,.08), rgba(255,255,255,.03));
+  padding: 18px;
+}
+
+.risk { 
+  font-weight: 950; 
+  font-size: 18px; 
+}
+
+.risk.low { 
+  color: var(--ok); 
+}
+
+.risk.mid { 
+  color: var(--warn); 
+}
+
+.risk.high { 
+  color: var(--danger); 
+}
+
+.meter {
+  margin-top: 12px;
+  border-radius: 16px;
+  border: 1px solid rgba(255,255,255,.12);
+  background: rgba(255,255,255,.05);
+  padding: 12px;
+}
+
+.meter .line {
+  height: 10px; 
+  border-radius: 999px;
+  background: rgba(255,255,255,.08);
+  border: 1px solid rgba(255,255,255,.12);
+  overflow:hidden;
+}
+
+.meter .fill {
+  height:100%; 
+  width:0%;
+  background: linear-gradient(90deg, rgba(110,231,200,.85), rgba(122,166,255,.85), rgba(255,123,212,.55));
+  transition: width 0.4s ease;
+}

@@ -1,4 +1,5 @@
 import { useEffect } from 'react';
+import './Toast.css';
 
 interface ToastProps {
   show: boolean;
@@ -7,22 +8,20 @@ interface ToastProps {
   onClose: () => void;
 }
 
-export default function Toast({ show, title, message, onClose }: ToastProps) {
+export const Toast = ({ show, title, message, onClose }: ToastProps) => {
   useEffect(() => {
     if (show) {
       const timer = setTimeout(() => {
         onClose();
-      }, 5000);
+      }, 5200);
       return () => clearTimeout(timer);
     }
   }, [show, onClose]);
 
-  if (!show) return null;
-
   return (
-    <div className={`toast ${show ? 'show' : ''}`}>
+    <div className={`toast ${show ? 'show' : ''}`} role="status" aria-live="polite">
       <div className="t">{title}</div>
       <div className="m">{message}</div>
     </div>
   );
-}
+};

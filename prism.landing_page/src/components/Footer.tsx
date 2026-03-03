@@ -1,16 +1,23 @@
-import { Link } from 'react-router-dom';
+import './Footer.css';
 
-export default function Footer() {
+interface FooterProps {
+  onNavigate: (page: string) => void;
+}
+
+export const Footer = ({ onNavigate }: FooterProps) => {
   return (
     <footer className="footer">
-      <div className="container">
+      <div className="container" style={{ display: 'flex', flexWrap: 'wrap', gap: '14px', justifyContent: 'space-between', alignItems: 'center' }}>
         <div>
-          <strong>Êm Dạ Mode</strong> — Chiến dịch nâng cao nhận thức về sức khỏe dạ dày cho giới trẻ 18–24 tuổi tại TP.HCM.
+          <div style={{ fontWeight: 950, color: 'var(--text)', letterSpacing: '.2px' }}>Êm Dạ Mode</div>
+          <div>Demo bố cục và UI cho website đồ án (1 file).</div>
         </div>
-        <div style={{ marginTop: '12px' }}>
-          <Link to="/">Trang chủ</Link> · <Link to="/about">About us</Link> · <Link to="/qna">Q&A</Link> · <Link to="/test">Test</Link> · <Link to="/contact">Liên hệ</Link>
+        <div style={{ display: 'flex', gap: '12px', flexWrap: 'wrap' }}>
+          <a href="#qna" onClick={(e) => { e.preventDefault(); onNavigate('qna'); }}>Q&A</a>
+          <a href="#contact" onClick={(e) => { e.preventDefault(); onNavigate('contact'); }}>Liên hệ</a>
+          <a href="#about" onClick={(e) => { e.preventDefault(); onNavigate('about'); }}>Core team</a>
         </div>
       </div>
     </footer>
   );
-}
+};

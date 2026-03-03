@@ -1,0 +1,1355 @@
+<!doctype html>
+<html lang="vi">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Êm Dạ Mode | Demo website (1 file)</title>
+  <meta name="description" content="Demo website dự án Êm Dạ Mode - 1 file, gồm Trang chủ, About us, Q&A, Test, Liên hệ." />
+  <style>
+:root{
+  --bg:#070b16;
+  --panel:#0f1630;
+  --text:#eef2ff;
+  --muted:#a6b0d6;
+  --line:rgba(255,255,255,.12);
+  --shadow: 0 22px 70px rgba(0,0,0,.45);
+  --r:18px;
+  --r2:26px;
+  --max: 1140px;
+  --mint:#6ee7c8;
+  --blue:#7aa6ff;
+  --pink:#ff7bd4;
+  --warn:#ffd166;
+  --danger:#ff6b6b;
+  --ok:#7ef29d;
+  --font: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji","Segoe UI Emoji";
+}
+*{ box-sizing:border-box; }
+html,body{ height:100%; }
+body{
+  margin:0;
+  font-family:var(--font);
+  color:var(--text);
+  background:
+    radial-gradient(1100px 650px at 12% 10%, rgba(110,231,200,.18), transparent 60%),
+    radial-gradient(900px 600px at 86% 12%, rgba(122,166,255,.18), transparent 62%),
+    radial-gradient(800px 500px at 70% 88%, rgba(255,123,212,.10), transparent 55%),
+    linear-gradient(180deg, var(--bg), #0b1330 65%, #070b16 100%);
+  overflow-x:hidden;
+}
+a{ color:inherit; text-decoration:none; }
+a:hover{ text-decoration:underline; text-underline-offset:4px; }
+.container{ width:min(var(--max), calc(100% - 44px)); margin:0 auto; }
+
+.bg-grid{
+  position:fixed; inset:0; pointer-events:none; z-index:-1;
+  background-image:
+    linear-gradient(to right, rgba(255,255,255,.05) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(255,255,255,.05) 1px, transparent 1px);
+  background-size: 80px 80px;
+  mask-image: radial-gradient(700px 420px at 20% 20%, rgba(0,0,0,.55), transparent 70%);
+  opacity:.22;
+}
+
+header{
+  position:sticky; top:0; z-index:30;
+  background: rgba(7,11,22,.55);
+  backdrop-filter: blur(14px);
+  border-bottom: 1px solid var(--line);
+}
+.nav{ display:flex; align-items:center; justify-content:space-between; padding: 14px 0; }
+.brand{ display:flex; align-items:center; gap:12px; }
+.logo{
+  width:40px; height:40px; border-radius: 16px;
+  background: conic-gradient(from 210deg, var(--mint), rgba(122,166,255,.95), rgba(255,123,212,.65), var(--mint));
+  box-shadow: 0 18px 42px rgba(0,0,0,.45);
+  position:relative;
+}
+.logo:after{ content:""; position:absolute; inset:-1px; border-radius:16px; border:1px solid rgba(255,255,255,.16); }
+.brand .title{ font-weight: 900; letter-spacing:.4px; }
+.brand .tag{ color:var(--muted); font-size:12px; margin-top:2px; }
+.badge{
+  display:inline-flex; align-items:center; gap:8px;
+  font-size:12px; padding:6px 10px; border-radius:999px;
+  background: linear-gradient(90deg, rgba(110,231,200,.16), rgba(122,166,255,.14));
+  border: 1px solid rgba(255,255,255,.12);
+  color: var(--muted);
+}
+.nav-links{ display:flex; gap:10px; align-items:center; }
+.nav-links a{
+  padding:10px 12px;
+  border-radius: 14px;
+  color: var(--muted);
+}
+.nav-links a.active,
+.nav-links a:hover{
+  color: var(--text);
+  background: rgba(255,255,255,.06);
+  text-decoration:none;
+}
+.btn{
+  display:inline-flex; align-items:center; justify-content:center; gap:10px;
+  padding: 12px 14px;
+  border-radius: 14px;
+  border: 1px solid rgba(255,255,255,.14);
+  background: rgba(255,255,255,.06);
+  color: var(--text);
+  cursor:pointer;
+  font-weight: 750;
+}
+.btn:hover{ background: rgba(255,255,255,.10); text-decoration:none; }
+.btn.primary{
+  border-color: rgba(110,231,200,.35);
+  background: linear-gradient(135deg, rgba(110,231,200,.22), rgba(122,166,255,.18));
+}
+.btn.primary:hover{ background: linear-gradient(135deg, rgba(110,231,200,.28), rgba(122,166,255,.22)); }
+.btn.ghost{ background: transparent; }
+.btn:disabled{ opacity:.55; cursor:not-allowed; }
+
+.icon{ width:18px; height:18px; display:inline-block; }
+.menu-btn{ display:none; }
+.mobile-panel{ display:none; padding: 10px 0 16px; }
+@media (max-width: 860px){
+  .nav-links{ display:none; }
+  .menu-btn{ display:inline-flex; }
+  .mobile-panel.open{ display:block; }
+  .mobile-panel a{
+    display:block; padding:12px 12px; border-radius: 14px; color: var(--muted);
+  }
+  .mobile-panel a:hover{ background: rgba(255,255,255,.06); color: var(--text); text-decoration:none; }
+}
+main{ padding: 34px 0 66px; }
+
+.panel{
+  border-radius: var(--r2);
+  border: 1px solid var(--line);
+  background: linear-gradient(180deg, rgba(255,255,255,.07), rgba(255,255,255,.03));
+  box-shadow: var(--shadow);
+}
+.panel.pad{ padding: 26px; }
+
+.kicker{ margin:0 0 12px; color: var(--muted); font-weight: 750; letter-spacing:.2px; }
+.h1{ margin:0 0 12px; font-size: 56px; line-height: 1.02; letter-spacing: .6px; }
+@media (max-width: 520px){ .h1{ font-size: 42px; } }
+.sub{ margin:0; color: var(--muted); font-size: 16px; line-height: 1.7; }
+
+.section{ margin-top: 22px; }
+.section h2{
+  margin:0 0 12px;
+  font-size: 22px;
+  letter-spacing:.2px;
+  display:flex; align-items:center; gap:10px;
+}
+.section h2 .bar{
+  width: 10px; height: 10px; border-radius: 99px;
+  background: linear-gradient(90deg, rgba(110,231,200,.9), rgba(122,166,255,.9));
+  box-shadow: 0 0 0 4px rgba(110,231,200,.08);
+}
+
+.hero-grid{
+  display:grid;
+  grid-template-columns: 1.2fr .8fr;
+  gap: 18px;
+  align-items: stretch;
+}
+@media (max-width: 960px){ .hero-grid{ grid-template-columns: 1fr; } }
+.hero-ill{ position:relative; overflow:hidden; }
+.hero-ill .glass{
+  position:absolute; inset: 0;
+  background: radial-gradient(600px 320px at 30% 20%, rgba(110,231,200,.22), transparent 60%),
+              radial-gradient(600px 340px at 80% 30%, rgba(122,166,255,.22), transparent 60%),
+              radial-gradient(520px 340px at 70% 90%, rgba(255,123,212,.12), transparent 60%);
+  opacity:.9;
+}
+.hero-ill svg{ width:100%; height:100%; display:block; position:relative; }
+
+.pill-row{ display:flex; flex-wrap:wrap; gap:10px; margin-top: 16px; }
+.pill{
+  display:inline-flex; align-items:center; gap:10px;
+  padding: 9px 12px;
+  border-radius: 999px;
+  border: 1px solid rgba(255,255,255,.14);
+  background: rgba(255,255,255,.06);
+  color: var(--muted);
+  font-size: 13px;
+}
+.pill b{ color: var(--text); }
+
+.grid-4{ display:grid; grid-template-columns: repeat(4, 1fr); gap: 14px; }
+.grid-3{ display:grid; grid-template-columns: repeat(3, 1fr); gap: 14px; }
+.grid-2{ display:grid; grid-template-columns: repeat(2, 1fr); gap: 14px; }
+@media (max-width: 980px){ .grid-4{ grid-template-columns: repeat(2,1fr); } }
+@media (max-width: 720px){ .grid-3{ grid-template-columns: 1fr; } .grid-2{ grid-template-columns:1fr; } }
+@media (max-width: 520px){ .grid-4{ grid-template-columns: 1fr; } }
+
+.card{
+  border-radius: var(--r);
+  border: 1px solid rgba(255,255,255,.12);
+  background: rgba(255,255,255,.05);
+  padding: 16px;
+  position:relative;
+  overflow:hidden;
+}
+.card:before{
+  content:"";
+  position:absolute; inset:-1px;
+  background: radial-gradient(300px 220px at 20% 10%, rgba(110,231,200,.12), transparent 60%),
+              radial-gradient(260px 200px at 90% 20%, rgba(122,166,255,.12), transparent 60%);
+  opacity:.7;
+}
+.card > *{ position:relative; }
+.card .top{ display:flex; align-items:center; gap:12px; }
+.card .i{
+  width:36px; height:36px; border-radius: 14px;
+  display:inline-flex; align-items:center; justify-content:center;
+  border: 1px solid rgba(255,255,255,.14);
+  background: rgba(255,255,255,.06);
+}
+.card .n{ font-size: 22px; font-weight: 950; }
+.card .d{ margin-top: 8px; color: var(--muted); font-size: 13px; line-height: 1.6; }
+
+.kpi{
+  border-radius: var(--r);
+  border: 1px solid rgba(255,255,255,.12);
+  background: rgba(255,255,255,.05);
+  padding: 18px;
+}
+.kpi h3{ margin:0 0 6px; font-size: 15px; letter-spacing:.2px; }
+.kpi p{ margin:0; color: var(--muted); font-size: 13px; line-height:1.65; }
+
+.cards{ display:grid; grid-template-columns: repeat(4, 1fr); gap: 14px; }
+@media (max-width: 980px){ .cards{ grid-template-columns: repeat(2,1fr); } }
+@media (max-width: 520px){ .cards{ grid-template-columns: 1fr; } }
+.card-mini{
+  border-radius: var(--r);
+  border: 1px solid rgba(255,255,255,.12);
+  background: rgba(255,255,255,.05);
+  padding: 16px;
+  position:relative;
+  overflow:hidden;
+}
+.card-mini .iconbig{
+  width: 44px; height: 44px; border-radius: 18px;
+  display:flex; align-items:center; justify-content:center;
+  background: linear-gradient(135deg, rgba(110,231,200,.22), rgba(122,166,255,.18));
+  border: 1px solid rgba(255,255,255,.14);
+  margin-bottom: 10px;
+}
+.card-mini h3{ margin: 0 0 8px; font-size: 16px; }
+.card-mini p{ margin:0; color: var(--muted); font-size: 13px; line-height:1.65; }
+.readmore{
+  margin-top: 12px;
+  display:inline-flex; align-items:center; gap: 10px;
+  padding: 10px 12px;
+  border-radius: 14px;
+  border: 1px solid rgba(255,255,255,.14);
+  background: rgba(255,255,255,.06);
+  font-weight: 800;
+  font-size: 13px;
+}
+.readmore:hover{ background: rgba(255,255,255,.10); text-decoration:none; }
+
+.helper{
+  margin-top: 14px;
+  display:flex; gap: 10px; align-items:flex-start;
+  color: var(--muted);
+  font-size: 13px;
+  line-height: 1.65;
+}
+.helper .dot{
+  width: 10px; height: 10px; border-radius: 99px;
+  background: rgba(110,231,200,.75);
+  margin-top: 7px;
+  box-shadow: 0 0 0 4px rgba(110,231,200,.08);
+}
+
+.team{ display:grid; grid-template-columns: repeat(5, 1fr); gap: 14px; }
+@media (max-width: 1050px){ .team{ grid-template-columns: repeat(3,1fr);} }
+@media (max-width: 720px){ .team{ grid-template-columns: 1fr; } }
+.member{
+  border-radius: var(--r);
+  border: 1px solid rgba(255,255,255,.12);
+  background: rgba(255,255,255,.05);
+  padding: 16px;
+}
+.avatar{
+  width: 50px; height: 50px; border-radius: 18px;
+  background: radial-gradient(22px 22px at 30% 30%, rgba(110,231,200,.9), rgba(110,231,200,.0)),
+              radial-gradient(24px 24px at 70% 30%, rgba(122,166,255,.9), rgba(122,166,255,.0)),
+              linear-gradient(135deg, rgba(255,255,255,.10), rgba(255,255,255,.04));
+  border: 1px solid rgba(255,255,255,.16);
+  margin-bottom: 10px;
+}
+.member .name{ font-weight: 950; letter-spacing:.2px; }
+.member .role{ color: var(--muted); font-size: 13px; margin-top: 6px; }
+
+.form{ display:grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 12px; }
+@media (max-width: 720px){ .form{ grid-template-columns: 1fr; } }
+.field{ display:flex; flex-direction:column; gap: 8px; }
+label{ font-size: 13px; color: var(--muted); }
+input, select, textarea{
+  padding: 12px 12px;
+  border-radius: 14px;
+  border: 1px solid rgba(255,255,255,.14);
+  background: rgba(11,18,38,.68);
+  color: var(--text);
+  outline:none;
+}
+textarea{ min-height: 120px; resize: vertical; }
+
+.toast{
+  position: fixed;
+  right: 18px; bottom: 18px;
+  width: min(420px, calc(100% - 36px));
+  background: rgba(15,22,48,.92);
+  border: 1px solid rgba(255,255,255,.14);
+  border-radius: 18px;
+  box-shadow: var(--shadow);
+  padding: 14px;
+  display:none;
+  z-index: 60;
+}
+.toast.show{ display:block; }
+.toast .t{ font-weight: 950; margin-bottom: 6px; }
+.toast .m{ color: var(--muted); font-size: 13px; line-height:1.55; }
+
+.qa-grid{
+  display:grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 14px;
+  margin-top: 12px;
+}
+@media (max-width: 840px){ .qa-grid{ grid-template-columns: 1fr; } }
+.flip{ perspective: 1200px; }
+.qa-card{
+  position: relative;
+  min-height: 180px;
+  cursor: pointer;
+  border-radius: var(--r);
+  border: 1px solid rgba(255,255,255,.12);
+  background: rgba(255,255,255,.05);
+  overflow:hidden;
+}
+.qa-card:before{
+  content:"";
+  position:absolute; inset:-1px;
+  background: radial-gradient(320px 240px at 10% 10%, rgba(110,231,200,.12), transparent 60%),
+              radial-gradient(320px 240px at 90% 10%, rgba(122,166,255,.12), transparent 60%),
+              radial-gradient(280px 220px at 70% 90%, rgba(255,123,212,.08), transparent 60%);
+  opacity:.9;
+}
+.qa-inner{
+  position:absolute; inset:0;
+  transform-style: preserve-3d;
+  transition: transform .56s cubic-bezier(.2,.78,.2,1);
+}
+.qa-card.open .qa-inner{ transform: rotateY(180deg); }
+.qa-face{
+  position:absolute; inset:0;
+  padding: 16px;
+  backface-visibility: hidden;
+}
+.qa-front .qmark{
+  width:44px; height:44px; border-radius: 18px;
+  display:flex; align-items:center; justify-content:center;
+  background: rgba(255,255,255,0.06);
+  border: 1px solid rgba(255,255,255,0.14);
+  margin-bottom: 10px;
+}
+.qa-front h3{ margin:0 0 10px; font-size: 16px; line-height:1.35; }
+.qa-front p{ margin:0; color: var(--muted); font-size: 13px; line-height:1.65; }
+.qa-back{ transform: rotateY(180deg); overflow:auto; }
+.qa-back h4{ margin:0 0 10px; font-size: 14px; }
+.qa-back .ans{ color: var(--text); font-size: 13px; line-height:1.7; }
+.qa-back .meta{ margin-top: 10px; color: var(--muted); font-size: 12px; line-height:1.6; }
+.qa-back .meta a{ color: var(--muted); }
+.qa-close{
+  position: sticky; top: 0;
+  display:flex; justify-content:flex-end;
+  padding: 10px;
+  background: rgba(15,22,48,.88);
+  border-bottom: 1px solid rgba(255,255,255,0.12);
+  backdrop-filter: blur(12px);
+}
+.qa-close button{
+  border-radius: 12px;
+  padding: 8px 10px;
+  border: 1px solid rgba(255,255,255,0.14);
+  background: rgba(255,255,255,0.06);
+  color: var(--text);
+  cursor:pointer;
+}
+.chip-row{ display:flex; flex-wrap:wrap; gap: 8px; margin-top: 10px; }
+.chip, .chipbtn{
+  padding: 6px 10px;
+  border-radius: 999px;
+  border: 1px solid rgba(255,255,255,0.14);
+  background: rgba(255,255,255,0.06);
+  font-size: 12px;
+  color: var(--muted);
+}
+.chipbtn{ cursor:pointer; }
+.chipbtn:hover{ background: rgba(255,255,255,0.10); color: var(--text); }
+
+.test-shell{ display:grid; grid-template-columns: 1fr .9fr; gap: 14px; margin-top: 12px; }
+@media (max-width: 900px){ .test-shell{ grid-template-columns: 1fr; } }
+.progress{
+  height: 10px;
+  background: rgba(255,255,255,.08);
+  border: 1px solid rgba(255,255,255,.12);
+  border-radius: 999px;
+  overflow:hidden;
+}
+.progress > div{ height:100%; width:0%; background: linear-gradient(90deg, rgba(110,231,200,.8), rgba(122,166,255,.8)); }
+.step{
+  margin-top: 12px;
+  border-radius: var(--r);
+  border: 1px solid rgba(255,255,255,.12);
+  background: rgba(255,255,255,.05);
+  padding: 18px;
+}
+.q-title{ margin: 14px 0 8px; font-weight: 950; font-size: 16px; letter-spacing:.2px; }
+.options{ display:flex; flex-direction:column; gap: 10px; margin-top: 10px; }
+.opt{
+  display:flex; align-items:flex-start; gap: 10px;
+  padding: 12px 12px;
+  border-radius: 14px;
+  border: 1px solid rgba(255,255,255,.14);
+  background: rgba(11,18,38,.68);
+  cursor:pointer;
+}
+.opt:hover{ background: rgba(255,255,255,.08); }
+.opt input{ margin-top: 3px; }
+.nav-row{ display:flex; gap: 10px; justify-content:space-between; align-items:center; margin-top: 14px; }
+.small{ color: var(--muted); font-size: 12px; line-height:1.6; }
+.result{
+  border-radius: var(--r2);
+  border: 1px solid rgba(255,255,255,.12);
+  background: linear-gradient(180deg, rgba(255,255,255,.08), rgba(255,255,255,.03));
+  padding: 18px;
+}
+.risk{ font-weight: 950; font-size: 18px; }
+.risk.low{ color: var(--ok); }
+.risk.mid{ color: var(--warn); }
+.risk.high{ color: var(--danger); }
+.meter{
+  margin-top: 12px;
+  border-radius: 16px;
+  border: 1px solid rgba(255,255,255,.12);
+  background: rgba(255,255,255,.05);
+  padding: 12px;
+}
+.meter .line{
+  height: 10px; border-radius: 999px;
+  background: rgba(255,255,255,.08);
+  border: 1px solid rgba(255,255,255,.12);
+  overflow:hidden;
+}
+.meter .fill{
+  height:100%; width:0%;
+  background: linear-gradient(90deg, rgba(110,231,200,.85), rgba(122,166,255,.85), rgba(255,123,212,.55));
+  transition: width 0.4s ease;
+}
+
+.footer{
+  border-top: 1px solid rgba(255,255,255,.10);
+  padding: 22px 0 26px;
+  color: var(--muted);
+  font-size: 13px;
+}
+</style>
+  <style>
+    section[data-page]{ display:none; }
+    section[data-page].active{ display:block; }
+  </style>
+</head>
+<body>
+  <div class="bg-grid" aria-hidden="true"></div>
+
+  <header>
+    <div class="container">
+      <div class="nav">
+        <a class="brand" href="#home" aria-label="Về trang chủ">
+          <div class="logo" aria-hidden="true"></div>
+          <div>
+            <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap;">
+              <span class="title">Êm Dạ Mode</span>
+              <span class="badge">Team Prism</span>
+            </div>
+            <div class="tag">Bật mode Êm Dạ, nhịp sống mượt mà</div>
+          </div>
+        </a>
+
+        <nav class="nav-links" aria-label="Điều hướng chính">
+          <a data-nav href="#home">Trang chủ</a>
+          <a data-nav href="#about">About us</a>
+          <a data-nav href="#qna">Q&A</a>
+          <a data-nav href="#test">Test</a>
+          <a data-nav href="#contact">Liên hệ</a>
+        </nav>
+
+        <div style="display:flex;align-items:center;gap:10px;">
+          <a class="btn primary" href="#test" title="Làm bài test">
+            <span class="icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none"><path d="M9 11h6M9 15h4" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><path d="M7 3h10a2 2 0 0 1 2 2v16l-4-2-4 2-4-2-4 2V5a2 2 0 0 1 2-2Z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/></svg>
+            </span>
+            Bắt đầu Test
+          </a>
+          <button class="btn ghost menu-btn" id="menuBtn" type="button" aria-expanded="false" aria-controls="mobilePanel">
+            <span class="icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none"><path d="M4 7h16M4 12h16M4 17h16" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+            </span>
+            Menu
+          </button>
+        </div>
+      </div>
+
+      <div class="mobile-panel" id="mobilePanel" aria-label="Menu di động">
+        <a href="#home">Trang chủ</a>
+        <a href="#about">About us</a>
+        <a href="#qna">Q&A</a>
+        <a href="#test">Test</a>
+        <a href="#contact">Liên hệ</a>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <div class="container">
+
+      <section data-page="home" id="page-home">
+        <section>
+          <div class="hero-grid">
+            <div class="panel pad">
+              <p class="kicker"><span class="badge">Chiến dịch truyền thông cộng đồng</span></p>
+              <h1 class="h1">ÊM DẠ MODE</h1>
+              <p class="sub">
+                <b>Bật mode “Êm Dạ”, nhịp sống mượt mà!</b><br>
+                Chiến dịch truyền thông gia tăng nhận thức về mức độ nghiêm trọng của bệnh lý dạ dày cho người trẻ 18-24 tại TP. Hồ Chí Minh.
+              </p>
+
+              <div class="pill-row">
+                <div class="pill"><span class="icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none"><path d="M12 2l1.2 5.2L18 9l-4.8 1.8L12 16l-1.2-5.2L6 9l4.8-1.8L12 2Z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/></svg></span><b>Nhận diện</b> dấu hiệu</div>
+                <div class="pill"><span class="icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none"><path d="M12 8h.01M11 12h1v6h1" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><path d="M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" stroke="currentColor" stroke-width="2"/></svg></span><b>Hiểu đúng</b> rủi ro</div>
+                <div class="pill"><span class="icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none"><path d="M9 11h6M9 15h4" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><path d="M7 3h10a2 2 0 0 1 2 2v16l-4-2-4 2-4-2-4 2V5a2 2 0 0 1 2-2Z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/></svg></span><b>Bắt đầu</b> bước nhỏ</div>
+              </div>
+
+              <div style="margin-top:18px;display:flex;gap:10px;flex-wrap:wrap;">
+                <a class="btn primary" href="#about"><span class="icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2" stroke="currentColor" stroke-width="2"/><path d="M9 11a4 4 0 1 0 0-8 4 4 0 0 0 0 8Z" stroke="currentColor" stroke-width="2"/><path d="M22 21v-2a4 4 0 0 0-3-3.87" stroke="currentColor" stroke-width="2"/><path d="M16 3.13a4 4 0 0 1 0 7.75" stroke="currentColor" stroke-width="2"/></svg></span>Về chúng mình</a>
+                <a class="btn" href="#qna"><span class="icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none"><path d="M21 15a4 4 0 0 1-4 4H8l-5 3V7a4 4 0 0 1 4-4h10a4 4 0 0 1 4 4v8Z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/></svg></span>Xem Q&A</a>
+                <a class="btn" href="#contact"><span class="icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none"><path d="M4 6h16v12H4V6Z" stroke="currentColor" stroke-width="2"/><path d="m4 7 8 6 8-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>Liên hệ</a>
+              </div>
+
+              <div class="helper">
+                <div class="dot" aria-hidden="true"></div>
+                <div>Nội dung mang tính tham khảo và không thay thế tư vấn y khoa.</div>
+              </div>
+            </div>
+
+            <div class="panel pad hero-ill">
+              <div class="glass" aria-hidden="true"></div>
+              
+              <svg viewBox="0 0 640 520" xmlns="http://www.w3.org/2000/svg" aria-label="Minh họa Êm Dạ Mode">
+                <defs>
+                  <linearGradient id="g1" x1="0" y1="0" x2="1" y2="1">
+                    <stop offset="0" stop-color="rgba(110,231,200,0.95)"/>
+                    <stop offset="0.55" stop-color="rgba(122,166,255,0.9)"/>
+                    <stop offset="1" stop-color="rgba(255,123,212,0.75)"/>
+                  </linearGradient>
+                  <filter id="blur" x="-20%" y="-20%" width="140%" height="140%">
+                    <feGaussianBlur stdDeviation="14"/>
+                  </filter>
+                </defs>
+
+                <circle cx="160" cy="140" r="110" fill="rgba(110,231,200,0.35)" filter="url(#blur)"/>
+                <circle cx="460" cy="160" r="120" fill="rgba(122,166,255,0.30)" filter="url(#blur)"/>
+                <circle cx="390" cy="400" r="130" fill="rgba(255,123,212,0.18)" filter="url(#blur)"/>
+
+                <g transform="translate(110,160)">
+                  <rect x="0" y="0" rx="22" ry="22" width="420" height="260" fill="rgba(255,255,255,0.08)" stroke="rgba(255,255,255,0.18)"/>
+                  <rect x="18" y="20" rx="16" ry="16" width="384" height="210" fill="rgba(7,11,22,0.85)" stroke="rgba(255,255,255,0.14)"/>
+                  <g transform="translate(38,48)">
+                    <rect x="0" y="0" rx="14" ry="14" width="210" height="60" fill="rgba(255,255,255,0.06)" stroke="rgba(255,255,255,0.12)"/>
+                    <rect x="0" y="78" rx="14" ry="14" width="320" height="42" fill="rgba(255,255,255,0.06)" stroke="rgba(255,255,255,0.12)"/>
+                    <rect x="0" y="132" rx="14" ry="14" width="280" height="42" fill="rgba(255,255,255,0.06)" stroke="rgba(255,255,255,0.12)"/>
+                    <rect x="0" y="186" rx="14" ry="14" width="180" height="24" fill="rgba(110,231,200,0.16)" stroke="rgba(110,231,200,0.30)"/>
+                  </g>
+
+                  <rect x="-20" y="266" rx="18" ry="18" width="460" height="56" fill="rgba(255,255,255,0.06)" stroke="rgba(255,255,255,0.14)"/>
+                  <rect x="90" y="284" rx="12" ry="12" width="240" height="18" fill="rgba(255,255,255,0.08)"/>
+                </g>
+
+                <g transform="translate(360,92)">
+                  <rect x="0" y="0" rx="18" ry="18" width="210" height="140" fill="rgba(255,255,255,0.08)" stroke="rgba(255,255,255,0.18)"/>
+                  <rect x="16" y="18" rx="10" ry="10" width="178" height="24" fill="rgba(255,255,255,0.06)"/>
+                  <rect x="16" y="54" rx="10" ry="10" width="128" height="18" fill="rgba(255,255,255,0.06)"/>
+                  <rect x="16" y="78" rx="10" ry="10" width="162" height="18" fill="rgba(255,255,255,0.06)"/>
+                  <rect x="16" y="108" rx="12" ry="12" width="86" height="18" fill="rgba(255,107,107,0.16)" stroke="rgba(255,107,107,0.35)"/>
+                  <circle cx="186" cy="30" r="8" fill="rgba(255,107,107,0.9)"/>
+                </g>
+
+                <g transform="translate(88,96)">
+                  <rect x="0" y="0" rx="20" ry="20" width="190" height="44" fill="rgba(255,255,255,0.06)" stroke="rgba(255,255,255,0.14)"/>
+                  <text x="18" y="28" font-family="ui-sans-serif, system-ui" font-size="14" fill="rgba(238,242,255,0.95)" font-weight="700">Êm Dạ Mode</text>
+                  <rect x="122" y="10" rx="12" ry="12" width="58" height="24" fill="rgba(110,231,200,0.22)" stroke="rgba(110,231,200,0.35)"/>
+                  <circle cx="166" cy="22" r="10" fill="url(#g1)" />
+                </g>
+
+                <g transform="translate(458,320)">
+                  <path d="M40 10c14 0 24 10 24 24 0 10-6 18-14 22 2 4 4 8 4 14 0 16-12 28-28 28-18 0-30-13-30-30 0-10 4-18 12-24-2-6-2-12 2-18 6-10 16-16 30-16Z"
+                    fill="rgba(255,255,255,0.08)" stroke="rgba(255,255,255,0.18)"/>
+                  <path d="M20 40c10-2 18 2 24 10" stroke="rgba(110,231,200,0.9)" stroke-width="3" stroke-linecap="round"/>
+                  <path d="M28 64c10 2 18-2 22-10" stroke="rgba(122,166,255,0.9)" stroke-width="3" stroke-linecap="round"/>
+                </g>
+              </svg>
+
+            </div>
+          </div>
+        </section>
+
+        <section class="section">
+          <h2><span class="bar" aria-hidden="true"></span>Số liệu nền cho bối cảnh</h2>
+          <div class="grid-4">
+            <div class="card">
+              <div class="top"><div class="i" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none"><path d="M12 8h.01M11 12h1v6h1" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><path d="M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" stroke="currentColor" stroke-width="2"/></svg></div><div class="n">5-10</div></div>
+              <div class="d">triệu người mắc GERD (demo số liệu theo outline).</div>
+            </div>
+            <div class="card">
+              <div class="top"><div class="i" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none"><path d="M12 8h.01M11 12h1v6h1" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><path d="M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" stroke="currentColor" stroke-width="2"/></svg></div><div class="n">15-20%</div></div>
+              <div class="d">dân số Việt Nam mắc viêm loét dạ dày (demo).</div>
+            </div>
+            <div class="card">
+              <div class="top"><div class="i" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none"><path d="M12 2l1.2 5.2L18 9l-4.8 1.8L12 16l-1.2-5.2L6 9l4.8-1.8L12 2Z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/></svg></div><div class="n">~70%</div></div>
+              <div class="d">có thể nhiễm HP (demo).</div>
+            </div>
+            <div class="card">
+              <div class="top"><div class="i" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none"><path d="M12 2l1.2 5.2L18 9l-4.8 1.8L12 16l-1.2-5.2L6 9l4.8-1.8L12 2Z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/></svg></div><div class="n">18/20</div></div>
+              <div class="d">tỷ lệ ung thư dạ dày cao (demo).</div>
+            </div>
+          </div>
+        </section>
+
+        <section class="section">
+          <h2><span class="bar" aria-hidden="true"></span>Thông qua chiến dịch chúng mình mong muốn</h2>
+          <div class="grid-3">
+            <div class="kpi"><h3>Nhận thức</h3><p>Nâng cao nhận thức về mức độ nghiêm trọng của các vấn đề dạ dày.</p></div>
+            <div class="kpi"><h3>Kiến thức</h3><p>Trang bị hiểu biết đúng, dễ hiểu về nguyên nhân và giải pháp.</p></div>
+            <div class="kpi"><h3>Hành động</h3><p>Thúc đẩy chủ động thay đổi ít nhất 1 thói quen để bảo vệ dạ dày.</p></div>
+          </div>
+        </section>
+
+        <section class="section">
+          <div class="panel pad">
+            <h2 style="margin-top:0;"><span class="bar" aria-hidden="true"></span>Vì sao lại là Êm Dạ Mode?</h2>
+            <p class="sub">
+              Người trẻ sợ bị gián đoạn nhịp sống hơn là sợ bệnh dạ dày. Khi bận rộn, dạ dày dễ “pop-up” khó chịu chen ngang khiến mất ngủ, mất tập trung, tụt hiệu suất.
+            </p>
+            <p class="sub" style="margin-top:10px;">
+              Ý tưởng kêu gọi bật Êm Dạ Mode theo hướng nhẹ nhàng, dễ làm: check sớm, chọn bước nhỏ, duy trì đúng nhịp để hạn chế “pop-up” quay lại.
+            </p>
+          </div>
+        </section>
+
+        <section class="section">
+          <h2><span class="bar" aria-hidden="true"></span>Tóm tắt 4 trang còn lại</h2>
+          <div class="cards">
+            <div class="card-mini">
+              <div class="iconbig" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2" stroke="currentColor" stroke-width="2"/><path d="M9 11a4 4 0 1 0 0-8 4 4 0 0 0 0 8Z" stroke="currentColor" stroke-width="2"/><path d="M22 21v-2a4 4 0 0 0-3-3.87" stroke="currentColor" stroke-width="2"/><path d="M16 3.13a4 4 0 0 1 0 7.75" stroke="currentColor" stroke-width="2"/></svg></div>
+              <h3>About us</h3>
+              <p>Giới thiệu team, mục tiêu, core team.</p>
+              <a class="readmore" href="#about">Tìm hiểu thêm</a>
+            </div>
+            <div class="card-mini">
+              <div class="iconbig" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none"><path d="M21 15a4 4 0 0 1-4 4H8l-5 3V7a4 4 0 0 1 4-4h10a4 4 0 0 1 4 4v8Z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/></svg></div>
+              <h3>Q&A</h3>
+              <p>Q&A có sẵn dạng thẻ lật, mỗi câu có nguồn và related.</p>
+              <a class="readmore" href="#qna">Tìm hiểu thêm</a>
+            </div>
+            <div class="card-mini">
+              <div class="iconbig" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none"><path d="M9 11h6M9 15h4" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><path d="M7 3h10a2 2 0 0 1 2 2v16l-4-2-4 2-4-2-4 2V5a2 2 0 0 1 2-2Z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/></svg></div>
+              <h3>Test</h3>
+              <p>Test demo kiểu MBTI, có progress và kết quả.</p>
+              <a class="readmore" href="#test">Tìm hiểu thêm</a>
+            </div>
+            <div class="card-mini">
+              <div class="iconbig" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none"><path d="M4 6h16v12H4V6Z" stroke="currentColor" stroke-width="2"/><path d="m4 7 8 6 8-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+              <h3>Liên hệ</h3>
+              <p>Thông tin liên hệ và form gửi email nhanh.</p>
+              <a class="readmore" href="#contact">Tìm hiểu thêm</a>
+            </div>
+          </div>
+        </section>
+      </section>
+
+      <section data-page="about" id="page-about">
+        <section class="section">
+          <div class="panel pad">
+            <p class="kicker"><span class="badge">About us</span></p>
+            <h2 style="margin-top:0;"><span class="bar" aria-hidden="true"></span>Team Prism</h2>
+            <p class="sub">
+              Êm Dạ Mode là đồ án tốt nghiệp của nhóm sinh viên ngành Truyền thông Đa phương tiện, Trường Đại học FPT TP.HCM.
+              Chiến dịch hướng đến truyền thông cộng đồng nhằm nâng cao nhận thức và thúc đẩy hành vi chăm sóc sức khỏe dạ dày ở người trẻ.
+            </p>
+
+            <div class="grid-3" style="margin-top:14px;">
+              <div class="kpi">
+                <h3>Why</h3>
+                <p>Giảm tình trạng xem nhẹ triệu chứng và trì hoãn hành động chăm sóc dạ dày.</p>
+              </div>
+              <div class="kpi">
+                <h3>How</h3>
+                <p>Truyền thông dễ tiếp cận, đi từ nhận diện đến bước nhỏ có thể làm ngay.</p>
+              </div>
+              <div class="kpi">
+                <h3>What</h3>
+                <p>Nội dung giáo dục sức khỏe, Q&A có nguồn và test demo để tự rà soát.</p>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section class="section">
+          <div class="panel pad">
+            <div style="display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;">
+              <h2 style="margin:0;"><span class="bar" aria-hidden="true"></span>Core team</h2>
+              <span class="badge">Team Prism</span>
+            </div>
+
+            <div class="team" style="margin-top:14px;">
+              <div class="member">
+                <div class="avatar" aria-hidden="true"></div>
+                <div class="name">Nguyễn Đặng Mỹ Hạnh</div>
+                <div class="role">Project Leader</div>
+              </div>
+              <div class="member">
+                <div class="avatar" aria-hidden="true"></div>
+                <div class="name">Đặng Anh Hào</div>
+                <div class="role">Planning Leader</div>
+              </div>
+              <div class="member">
+                <div class="avatar" aria-hidden="true"></div>
+                <div class="name">Lê Nguyễn Mai Thảo</div>
+                <div class="role">Communications Leader</div>
+              </div>
+              <div class="member">
+                <div class="avatar" aria-hidden="true"></div>
+                <div class="name">Nguyễn Thị Thanh Thảo</div>
+                <div class="role">Production Leader</div>
+              </div>
+              <div class="member">
+                <div class="avatar" aria-hidden="true"></div>
+                <div class="name">Phan Thị Trà My</div>
+                <div class="role">Event Leader</div>
+              </div>
+            </div>
+          </div>
+        </section>
+      </section>
+
+      <section data-page="qna" id="page-qna">
+        <section class="section">
+          <div class="panel pad">
+            <p class="kicker"><span class="badge">Q&A có sẵn</span></p>
+            <h2 style="margin-top:0;"><span class="bar" aria-hidden="true"></span>Câu hỏi thường gặp</h2>
+            <p class="sub">
+              Danh sách câu hỏi có sẵn theo dạng thẻ lật. Bấm vào câu hỏi để lật sang câu trả lời.
+              Trong mỗi câu trả lời luôn có nguồn tham khảo và related questions.
+            </p>
+          </div>
+        </section>
+
+        <section class="section">
+          <div id="qaGrid" class="qa-grid" aria-label="Danh sách Q&A"></div>
+        </section>
+
+        <section class="section">
+          <div class="panel pad">
+            <h2 style="margin-top:0;"><span class="bar" aria-hidden="true"></span>Gửi câu hỏi cho dự án</h2>
+            <p class="sub">Bạn không thấy câu hỏi của mình? Nhập câu hỏi tại đây, tụi mình sẽ phản hồi qua email.</p>
+
+            <form id="askForm">
+              <div class="form">
+                <div class="field">
+                  <label for="askEmail">Email của bạn (không bắt buộc)</label>
+                  <input id="askEmail" type="email" placeholder="you@example.com" />
+                </div>
+                <div class="field" style="grid-column:1/-1;">
+                  <label for="askQ">Nhập câu hỏi</label>
+                  <textarea id="askQ" placeholder="Ví dụ: Đau thượng vị về đêm có nguy hiểm không?"></textarea>
+                </div>
+              </div>
+
+              <div style="margin-top:12px;">
+                <button class="btn primary" type="submit"><span class="icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none"><path d="M4 6h16v12H4V6Z" stroke="currentColor" stroke-width="2"/><path d="m4 7 8 6 8-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>Send</button>
+              </div>
+
+              <p class="small" style="margin-top:10px;">
+                Nếu mailto không hoạt động, bạn có thể gửi trực tiếp tới <a href="mailto:prismproject.fptu@gmail.com">prismproject.fptu@gmail.com</a>.
+              </p>
+            </form>
+          </div>
+        </section>
+      </section>
+
+      <section data-page="test" id="page-test">
+        <section class="section">
+          <div class="panel pad">
+            <p class="kicker"><span class="badge">Kiểm tra nguy cơ</span></p>
+            <h2 style="margin-top:0;"><span class="bar" aria-hidden="true"></span>Trắc nghiệm dạ dày</h2>
+            <p class="sub">
+              Bài test gồm 10 câu hỏi chia theo cảm nhận, thói quen và dấu hiệu cảnh báo. Giúp bạn định vị xem mình đang thuộc "G-Type" nào để sớm có biện pháp điều chỉnh.
+            </p>
+            <div class="helper">
+              <div class="dot" aria-hidden="true"></div>
+              <div>Lưu ý: Kết quả chỉ mang tính chất đánh giá sơ bộ, hoàn toàn không thay thế chẩn đoán y khoa.</div>
+            </div>
+          </div>
+        </section>
+
+        <section class="section">
+          <div class="test-shell">
+            <div class="panel pad">
+              <div class="progress" aria-label="Tiến độ bài test"><div id="barFill"></div></div>
+              <div class="small" id="testMeta" style="margin-top:10px;"></div>
+
+              <div class="meter" aria-label="Thang đánh giá (0-30 điểm)">
+                <div style="display:flex;justify-content:space-between;align-items:center;">
+                  <div class="small">Điểm nguy cơ:</div>
+                  <div class="small" id="meterLabel" style="font-weight: bold;">0/30</div>
+                </div>
+                <div class="line" style="margin-top:8px;"><div class="fill" id="meterFill"></div></div>
+              </div>
+
+              <div id="testWizard" class="step">
+                <div id="testStep"></div>
+                <div class="nav-row">
+                  <button class="btn" id="btnBack" type="button">Quay lại</button>
+                  <button class="btn primary" id="btnNext" type="button">Tiếp</button>
+                </div>
+              </div>
+
+              <div id="testResult" style="margin-top:12px;"></div>
+            </div>
+
+            <div class="panel pad">
+              <h2 style="margin-top:0;"><span class="bar" aria-hidden="true"></span>Phân nhóm G-Type</h2>
+              <p class="sub">Kết quả quy chiếu dựa trên mức độ nhạy cảm của dạ dày.</p>
+              <div class="grid-2" style="margin-top:12px;">
+                <div class="kpi"><h3>🟢 Balanced</h3><p style="font-size: 12px">Dạ dày ổn định. Cần duy trì giờ ăn đều, giảm stress để bảo vệ đường dài.</p></div>
+                <div class="kpi"><h3>🟡 Sensitive</h3><p style="font-size: 12px">Dạ dày nhạy cảm. Có dấu hiệu rối loạn nhẹ, cần điều chỉnh chế độ ăn.</p></div>
+                <div class="kpi"><h3>🟠 Warning</h3><p style="font-size: 12px">Nguy cơ viêm/trào ngược. Nên chủ động đi khám chuyên khoa tiêu hoá.</p></div>
+                <div class="kpi"><h3>🔴 Critical</h3><p style="font-size: 12px">Có dấu hiệu nghiêm trọng. Khuyến nghị gặp bác sĩ y tế càng sớm càng tốt.</p></div>
+              </div>
+            </div>
+          </div>
+        </section>
+      </section>
+
+      <section data-page="contact" id="page-contact">
+        <section class="section">
+          <div class="panel pad">
+            <p class="kicker"><span class="badge">Liên hệ</span></p>
+            <h2 style="margin-top:0;"><span class="bar" aria-hidden="true"></span>Thông tin liên hệ</h2>
+            <p class="sub">Nếu bạn muốn hợp tác truyền thông, tài trợ hoặc cần thêm thông tin về hoạt động, hãy để lại lời nhắn.</p>
+
+            <div class="grid-2" style="margin-top:12px;">
+              <div class="kpi">
+                <h3>Phone/Zalo</h3>
+                <p><a href="tel:0815398633">0815398633</a></p>
+              </div>
+              <div class="kpi">
+                <h3>Email dự án</h3>
+                <p><a href="mailto:prismproject.fptu@gmail.com">prismproject.fptu@gmail.com</a></p>
+              </div>
+              <div class="kpi">
+                <h3>Email trưởng BTC</h3>
+                <p><a href="mailto:hanhndmss180820@fpt.edu.vn">hanhndmss180820@fpt.edu.vn</a><br>
+                <span class="small">(Ms. Nguyễn Đặng Mỹ Hạnh)</span></p>
+              </div>
+              <div class="kpi">
+                <h3>Giờ phản hồi</h3>
+                <p>Trong 24-48h (demo). Có thể chỉnh theo quy trình của nhóm.</p>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section class="section">
+          <div class="panel pad">
+            <h2 style="margin-top:0;"><span class="bar" aria-hidden="true"></span>Gửi liên hệ</h2>
+            <p class="sub">Form này dùng mailto để mở ứng dụng email trên máy của bạn và tạo sẵn nội dung gửi về email dự án.</p>
+
+            <form id="contactForm">
+              <div class="form">
+                <div class="field">
+                  <label for="name">Họ và tên</label>
+                  <input id="name" name="name" autocomplete="name" placeholder="Nguyễn Văn A" />
+                </div>
+                <div class="field">
+                  <label for="email">Email</label>
+                  <input id="email" name="email" type="email" autocomplete="email" placeholder="you@example.com" />
+                </div>
+                <div class="field">
+                  <label for="phone">Số điện thoại</label>
+                  <input id="phone" name="phone" autocomplete="tel" placeholder="09xx xxx xxx" />
+                </div>
+                <div class="field">
+                  <label for="topic">Bạn muốn liên hệ về</label>
+                  <select id="topic" name="topic">
+                    <option>Hợp tác chuyên môn</option>
+                    <option>Tài trợ</option>
+                    <option>Truyền thông</option>
+                    <option>Khác</option>
+                  </select>
+                </div>
+                <div class="field" style="grid-column:1/-1;">
+                  <label for="message">Nội dung</label>
+                  <textarea id="message" name="message" placeholder="Bạn muốn nhắn gì cho tụi mình?"></textarea>
+                </div>
+              </div>
+
+              <div style="margin-top:12px;display:flex;gap:10px;flex-wrap:wrap;">
+                <button class="btn primary" type="submit"><span class="icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none"><path d="M4 6h16v12H4V6Z" stroke="currentColor" stroke-width="2"/><path d="m4 7 8 6 8-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>Gửi liên hệ</button>
+                <a class="btn" href="#qna"><span class="icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none"><path d="M21 15a4 4 0 0 1-4 4H8l-5 3V7a4 4 0 0 1 4-4h10a4 4 0 0 1 4 4v8Z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/></svg></span>Xem Q&A trước</a>
+              </div>
+            </form>
+
+            <div class="helper">
+              <div class="dot" aria-hidden="true"></div>
+              <div>Nếu muốn gửi mail tự động không cần mail client, có thể tích hợp EmailJS hoặc Formspree ở bản final.</div>
+            </div>
+          </div>
+        </section>
+      </section>
+
+    </div>
+  </main>
+
+  <footer class="footer">
+    <div class="container" style="display:flex;flex-wrap:wrap;gap:14px;justify-content:space-between;align-items:center;">
+      <div>
+        <div style="font-weight:950;color:var(--text);letter-spacing:.2px;">Êm Dạ Mode</div>
+        <div>Demo bố cục và UI cho website đồ án (1 file).</div>
+      </div>
+      <div style="display:flex;gap:12px;flex-wrap:wrap;">
+        <a href="#qna">Q&A</a>
+        <a href="#contact">Liên hệ</a>
+        <a href="#about">Core team</a>
+      </div>
+    </div>
+  </footer>
+
+  <div class="toast" id="toast" role="status" aria-live="polite">
+    <div class="t">Thông báo</div>
+    <div class="m">...</div>
+  </div>
+
+  <script>
+    const $ = (sel, el=document) => el.querySelector(sel);
+    const $$ = (sel, el=document) => Array.from(el.querySelectorAll(sel));
+
+    function showToast(title, msg){
+      const t = $("#toast");
+      if(!t) return;
+      $(".t", t).textContent = title;
+      $(".m", t).textContent = msg;
+      t.classList.add("show");
+      window.clearTimeout(window.__toastTimer);
+      window.__toastTimer = window.setTimeout(() => t.classList.remove("show"), 5200);
+    }
+
+    function setupMobileNav(){
+      const btn = $("#menuBtn");
+      const panel = $("#mobilePanel");
+      if(!btn || !panel) return;
+      btn.addEventListener("click", () => {
+        panel.classList.toggle("open");
+        btn.setAttribute("aria-expanded", panel.classList.contains("open") ? "true" : "false");
+      });
+    }
+
+    function setActiveHashNav(){
+      const hash = (location.hash || "#home").replace("#","");
+      document.querySelectorAll("section[data-page]").forEach(sec => {
+        sec.classList.toggle("active", sec.getAttribute("data-page") === hash);
+      });
+      document.querySelectorAll("a[data-nav]").forEach(a => {
+        a.classList.toggle("active", a.getAttribute("href") === "#" + hash);
+      });
+      const panel = document.getElementById("mobilePanel");
+      const btn = document.getElementById("menuBtn");
+      if(panel && panel.classList.contains("open")) {
+        panel.classList.remove("open");
+        if(btn) btn.setAttribute("aria-expanded","false");
+      }
+      window.scrollTo({top:0, behavior:"smooth"});
+    }
+
+    document.addEventListener("DOMContentLoaded", () => {
+      setupMobileNav();
+      setActiveHashNav();
+      window.addEventListener("hashchange", setActiveHashNav);
+    });
+  </script>
+
+  <script>
+    const qaData = [
+      {
+        id:"q1",
+        q:"Đau dạ dày hay trào ngược khác nhau thế nào?",
+        preview:"Gợi ý phân biệt dựa theo cảm giác nóng rát, vị trí đau và triệu chứng đi kèm.",
+        a:`Nếu bạn hay ợ nóng, ợ chua, cảm giác nóng rát lan lên ngực, đôi khi kèm ho khan, khàn tiếng, có thể liên quan trào ngược dạ dày thực quản (GERD).<br><br>
+           Nếu bạn đau âm ỉ, nóng rát vùng thượng vị, liên quan bữa ăn, kèm đầy bụng, khó tiêu, buồn nôn, có thể gợi ý viêm dạ dày hoặc viêm loét dạ dày tá tràng.`,
+        sources:[
+          {t:"VnExpress: dấu hiệu trào ngược", u:"https://vnexpress.net/6-dau-hieu-trao-nguoc-da-day-4666462.html"},
+          {t:"Sức khoẻ & Đời sống: viêm loét dạ dày tá tràng", u:"https://suckhoedoisong.vn/benh-viem-loet-da-day-ta-trang-169210802145239692.htm"}
+        ],
+        related:["q4","q5"]
+      },
+      {
+        id:"q4",
+        q:"Khi nào cần đi khám ngay, không nên tự chịu?",
+        preview:"Có dấu hiệu nghi ngờ xuất huyết tiêu hóa hoặc sụt cân, thiếu máu không rõ nguyên nhân.",
+        a:`Bạn nên đi khám sớm (hoặc khám ngay) nếu có dấu hiệu nghi ngờ xuất huyết tiêu hóa như nôn ra máu, đi ngoài phân đen hoặc có triệu chứng nặng như sụt cân, thiếu máu không rõ nguyên nhân.`,
+        sources:[
+          {t:"Mayo Clinic: GI bleeding", u:"https://www.mayoclinic.org/diseases-conditions/gastrointestinal-bleeding/symptoms-causes/syc-20372729"},
+          {t:"NHS: indigestion", u:"https://www.nhs.uk/conditions/indigestion/"}
+        ],
+        related:["q1","q10"]
+      },
+      {
+        id:"q5",
+        q:"Trào ngược dạ dày nên kiêng gì để cải thiện triệu chứng?",
+        preview:"Thường khuyến nghị hạn chế cà phê, rượu bia, thuốc lá, đồ nhiều dầu mỡ.",
+        a:`Một số khuyến nghị thường gặp là hạn chế cà phê, bia rượu, thuốc lá; hạn chế thức ăn nhiều chất béo, dầu mỡ; cân nhắc tránh một số nhóm thực phẩm dễ làm nặng triệu chứng (tùy cơ địa).`,
+        sources:[
+          {t:"Vinmec: nên ăn gì và kiêng gì", u:"https://www.vinmec.com/vie/bai-viet/trao-nguoc-da-day-thuc-quan-nen-an-gi-va-kieng-an-gi-vi"}
+        ],
+        related:["q1","q10"]
+      },
+      {
+        id:"q10",
+        q:"Nôn ra máu, đi ngoài phân đen có nguy hiểm không?",
+        preview:"Có thể liên quan xuất huyết tiêu hóa và nên đi khám ngay.",
+        a:`Đây là nhóm dấu hiệu có thể liên quan xuất huyết tiêu hóa và được khuyến nghị đi khám ngay để đánh giá và xử trí kịp thời.`,
+        sources:[
+          {t:"NIDDK: gastritis symptoms", u:"https://www.niddk.nih.gov/health-information/digestive-diseases/gastritis-gastropathy/symptoms-causes"},
+          {t:"Mayo Clinic: GI bleeding", u:"https://www.mayoclinic.org/diseases-conditions/gastrointestinal-bleeding/symptoms-causes/syc-20372729"}
+        ],
+        related:["q4","q5"]
+      },
+    ];
+
+    function renderQA(){
+      const grid = document.getElementById("qaGrid");
+      if(!grid) return;
+      grid.innerHTML = qaData.map(item => `
+        <div class="flip">
+          <div class="qa-card" data-id="${item.id}" role="button" tabindex="0" aria-label="Mở câu trả lời">
+            <div class="qa-inner">
+              <div class="qa-face qa-front">
+                <div class="qmark" aria-hidden="true">
+                  <svg viewBox="0 0 24 24" fill="none" width="22" height="22">
+                    <path d="M9.5 9a2.5 2.5 0 0 1 5 0c0 2-2.5 2-2.5 4" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                    <path d="M12 17h.01" stroke="currentColor" stroke-width="3" stroke-linecap="round"/>
+                    <path d="M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" stroke="currentColor" stroke-width="2"/>
+                  </svg>
+                </div>
+                <div class="badge" style="display:inline-flex;margin-bottom:10px;">Q&A</div>
+                <h3>${item.q}</h3>
+                <p>${item.preview}</p>
+                <div class="chip-row" aria-hidden="true" style="margin-top:12px;">
+                  <span class="chip">Bấm để lật</span>
+                  <span class="chip">Nguồn</span>
+                  <span class="chip">Related</span>
+                </div>
+              </div>
+              <div class="qa-face qa-back">
+                <div class="qa-close"><button type="button" data-close>Đóng</button></div>
+                <h4>Trả lời</h4>
+                <div class="ans">${item.a}</div>
+                <div class="meta">
+                  <div style="margin-top:10px;"><b>Nguồn tham khảo</b></div>
+                  <ul>
+                    ${item.sources.map(s => `<li><a href="${s.u}" target="_blank" rel="noopener noreferrer">${s.t}</a></li>`).join("")}
+                  </ul>
+                  <div style="margin-top:10px;"><b>Related questions</b></div>
+                  <div class="chip-row">
+                    ${item.related.map(rid => {
+                      const r = qaData.find(x => x.id === rid);
+                      return r ? `<button class="chipbtn" type="button" data-jump="${rid}">${r.q}</button>` : "";
+                    }).join("")}
+                  </div>
+                  <div class="small" style="margin-top:10px;">
+                    Lưu ý: Nội dung mang tính tham khảo và không thay thế tư vấn y khoa.
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      `).join("");
+
+      function toggleCard(card, open){
+        document.querySelectorAll(".qa-card.open").forEach(c => { if(c !== card) c.classList.remove("open"); });
+        if(open === undefined) card.classList.toggle("open");
+        else card.classList.toggle("open", open);
+      }
+
+      grid.addEventListener("click", (e) => {
+        const closeBtn = e.target.closest("[data-close]");
+        if(closeBtn){
+          const card = e.target.closest(".qa-card");
+          toggleCard(card, false);
+          return;
+        }
+        const jump = e.target.closest("[data-jump]");
+        if(jump){
+          const id = jump.getAttribute("data-jump");
+          const card = grid.querySelector(`.qa-card[data-id="${id}"]`);
+          if(card){
+            card.scrollIntoView({behavior:"smooth", block:"center"});
+            toggleCard(card, true);
+          }
+          return;
+        }
+        const card = e.target.closest(".qa-card");
+        if(card) toggleCard(card);
+      });
+
+      grid.addEventListener("keydown", (e) => {
+        if(e.key !== "Enter" && e.key !== " ") return;
+        const card = e.target.closest(".qa-card");
+        if(card){
+          e.preventDefault();
+          toggleCard(card);
+        }
+      });
+    }
+
+    function setupAsk(){
+      const form = document.getElementById("askForm");
+      if(!form) return;
+      form.addEventListener("submit", (e) => {
+        e.preventDefault();
+        const email = (document.getElementById("askEmail").value || "").trim();
+        const q = (document.getElementById("askQ").value || "").trim();
+        if(!q){
+          showToast("Thiếu câu hỏi", "Bạn nhập câu hỏi trước khi gửi nhé.");
+          return;
+        }
+        const to = "prismproject.fptu@gmail.com";
+        const subject = encodeURIComponent("Q&A | Câu hỏi từ website Êm Dạ Mode");
+        const body = encodeURIComponent(
+          `Email người gửi: ${email || "(không cung cấp)"}\n\nCâu hỏi:\n${q}\n\nGửi từ trang Q&A (website Êm Dạ Mode).`
+        );
+        window.location.href = `mailto:${to}?subject=${subject}&body=${body}`;
+        showToast("Sắp mở email", "Trình duyệt sẽ mở ứng dụng email của bạn để gửi câu hỏi.");
+        form.reset();
+      });
+    }
+
+    document.addEventListener("DOMContentLoaded", () => {
+      renderQA();
+      setupAsk();
+    });
+  </script>
+
+  <script>
+    const testItems = [
+      { id:"q1", tag:"PHẦN 1 — TRIỆU CHỨNG CẢM NHẬN", q:"Bạn có cảm giác đau hoặc nóng rát vùng thượng vị (trên rốn) không?",
+        opts:[["Không bao giờ",0], ["Thỉnh thoảng (1–2 lần/tuần)",1], ["Khá thường xuyên (3–5 lần/tuần)",2], ["Gần như mỗi ngày hoặc dữ dội",3]]},
+      { id:"q2", tag:"PHẦN 1 — TRIỆU CHỨNG CẢM NHẬN", q:"Bạn có bị đầy hơi, chướng bụng sau ăn?",
+        opts:[["Hiếm khi",0], ["Thỉnh thoảng",1], ["Thường xuyên",2], ["Hầu như sau mọi bữa ăn",3]]},
+      { id:"q3", tag:"PHẦN 1 — TRIỆU CHỨNG CẢM NHẬN", q:"Ợ chua hoặc trào ngược xảy ra mức nào?",
+        opts:[["Không có",0], ["Thỉnh thoảng",1], ["Nhiều lần/tuần",2], ["Hàng ngày hoặc ảnh hưởng giấc ngủ",3]]},
+      { id:"q4", tag:"PHẦN 1 — TRIỆU CHỨNG CẢM NHẬN", q:"Buồn nôn hoặc khó tiêu kéo dài?",
+        opts:[["Không",0], ["Ít khi",1], ["Hay gặp",2], ["Rất thường xuyên",3]]},
+
+      { id:"q5", tag:"PHẦN 2 — YẾU TỐ NGUY CƠ LỐI SỐNG", q:"Thói quen ăn uống của bạn:",
+        opts:[["Điều độ, đúng giờ",0], ["Thỉnh thoảng bỏ bữa",1], ["Hay ăn thất thường, ăn nhanh",2], ["Rất thất thường, hay ăn khuya",3]]},
+      { id:"q6", tag:"PHẦN 2 — YẾU TỐ NGUY CƠ LỐI SỐNG", q:"Căng thẳng tâm lý gần đây:",
+        opts:[["Thấp",0], ["Trung bình",1], ["Cao",2], ["Rất cao kéo dài",3]]},
+      { id:"q7", tag:"PHẦN 2 — YẾU TỐ NGUY CƠ LỐI SỐNG", q:"Sử dụng chất kích thích (cà phê, rượu, thuốc lá):",
+        opts:[["Không",0], ["Ít",1], ["Thường xuyên",2], ["Hàng ngày mức cao",3]]},
+
+      { id:"q8", tag:"PHẦN 3 — DẤU HIỆU CẢNH BÁO", q:"Bạn có sụt cân không chủ ý?",
+        opts:[["Không",0], ["Giảm nhẹ",1], ["Giảm rõ",2], ["Giảm nhanh",3]]},
+      { id:"q9", tag:"PHẦN 3 — DẤU HIỆU CẢNH BÁO", q:"Đi ngoài phân đen hoặc có máu?",
+        opts:[["Không",0], ["Không chắc",1], ["Có 1 lần",2], ["Có nhiều lần",3]]},
+      { id:"q10", tag:"PHẦN 3 — DẤU HIỆU CẢNH BÁO", q:"Cơn đau dạ dày có làm bạn thức giấc ban đêm?",
+        opts:[["Không",0], ["Hiếm khi",1], ["Thỉnh thoảng",2], ["Thường xuyên",3]]},
+    ];
+
+    const state = { idx:0, answers:{} };
+
+    function renderStep(){
+      const stepEl = document.getElementById("testStep");
+      const metaEl = document.getElementById("testMeta");
+      const bar = document.getElementById("barFill");
+      const item = testItems[state.idx];
+
+      const pct = Math.round(((state.idx) / testItems.length) * 100);
+      bar.style.width = `${pct}%`;
+      metaEl.innerHTML = `<b style="color:var(--mint)">Câu ${state.idx + 1}/${testItems.length}</b> • ${item.tag}`;
+
+      stepEl.innerHTML = `
+        <div class="q-title">${item.q}</div>
+        <div class="options">
+          ${item.opts.map(([t, s]) => {
+            const checked = (state.answers[item.id] === s) ? "checked" : "";
+            return `
+              <label class="opt">
+                <input type="radio" name="opt" value="${s}" ${checked} />
+                <div>${t}</div>
+              </label>
+            `;
+          }).join("")}
+        </div>
+      `;
+
+      const backBtn = document.getElementById("btnBack");
+      const nextBtn = document.getElementById("btnNext");
+      backBtn.disabled = state.idx === 0;
+      nextBtn.textContent = (state.idx === testItems.length - 1) ? "Xem kết quả" : "Tiếp";
+    }
+
+    function getSelected(){
+      const sel = document.querySelector('input[name="opt"]:checked');
+      if(!sel) return null;
+      return Number(sel.value);
+    }
+
+    function calcResult(){
+      let score = 0;
+      testItems.forEach(it => {
+        score += Number(state.answers[it.id] ?? 0);
+      });
+
+      let resultTitle = "";
+      let resultDesc = "";
+      let resultTip = "";
+      let cls = "low"; 
+
+      if(score >= 23){
+        resultTitle = "🔴 G-TYPE CRITICAL";
+        resultDesc = "Có dấu hiệu cảnh báo nghiêm trọng.";
+        resultTip = "Khuyến nghị: đi khám y tế càng sớm càng tốt.";
+        cls = "high";
+      } else if(score >= 16){
+        resultTitle = "🟠 G-TYPE WARNING";
+        resultDesc = "Nguy cơ viêm dạ dày hoặc trào ngược đáng chú ý.";
+        resultTip = "Gợi ý: nên đi khám chuyên khoa tiêu hoá để kiểm tra.";
+        cls = "mid"; 
+      } else if(score >= 8){
+        resultTitle = "🟡 G-TYPE SENSITIVE";
+        resultDesc = "Dạ dày nhạy cảm, có dấu hiệu rối loạn chức năng tiêu hoá.";
+        resultTip = "Gợi ý: điều chỉnh chế độ ăn, theo dõi triệu chứng 2–4 tuần.";
+        cls = "mid";
+      } else {
+        resultTitle = "🟢 G-TYPE BALANCED";
+        resultDesc = "Dạ dày đang tương đối ổn định. Có thể có khó chịu nhẹ do lối sống.";
+        resultTip = "Gợi ý: duy trì giờ ăn đều, giảm stress, hạn chế chất kích thích.";
+        cls = "low";
+      }
+      return { score, resultTitle, resultDesc, resultTip, cls };
+    }
+
+    function renderResult(){
+      const out = document.getElementById("testResult");
+      const wizard = document.getElementById("testWizard");
+      const meterFill = document.getElementById("meterFill");
+      const meterLabel = document.getElementById("meterLabel");
+
+      const { score, resultTitle, resultDesc, resultTip, cls } = calcResult();
+      const pct = Math.round((score / 30) * 100);
+      meterFill.style.width = `${pct}%`;
+      meterLabel.textContent = `${score}/30 điểm`;
+
+      out.innerHTML = `
+        <div class="result">
+          <div class="badge" style="display:inline-flex;margin-bottom:10px;">Kết quả bài test</div>
+          <div class="risk ${cls}">${resultTitle}</div>
+          <p class="sub" style="margin-top:10px; font-weight: bold;">${resultDesc}</p>
+          <ul style="margin-top:10px; padding-left: 20px; color:var(--muted); font-size:14px;">
+            <li>${resultTip}</li>
+          </ul>
+          
+          <div class="helper" style="margin-top:18px; background: rgba(255,255,255,0.05); padding: 14px; border-radius: 12px; border: 1px solid rgba(255,255,255,.1);">
+            <div class="dot" aria-hidden="true" style="background:var(--warn); box-shadow: 0 0 0 4px rgba(255,209,102,.15);"></div>
+            <div style="font-size:13px; color:var(--text);">
+              <b style="color:var(--warn)">LƯU Ý TỪ ÊM DẠ MODE:</b> <br>Kết quả chỉ mang tính tham khảo sức khỏe ban đầu. Nếu bạn có triệu chứng nặng, kéo dài, hoặc lo lắng — hãy đi khám bác sĩ.
+            </div>
+          </div>
+
+          <div class="nav-row" style="margin-top:18px;">
+            <a class="btn primary" href="#qna">Xem thêm Q&A</a>
+            <button class="btn" type="button" id="btnRestart">Làm lại</button>
+          </div>
+        </div>
+      `;
+
+      wizard.style.display = "none";
+
+      document.getElementById("btnRestart").addEventListener("click", () => {
+        state.idx = 0;
+        state.answers = {};
+        out.innerHTML = "";
+        wizard.style.display = "";
+        meterFill.style.width = "0%";
+        meterLabel.textContent = "0/30";
+        renderStep();
+        window.scrollTo({top:0, behavior:"smooth"});
+      });
+    }
+
+    function setupTest(){
+      document.getElementById("btnBack").addEventListener("click", () => {
+        state.idx = Math.max(0, state.idx - 1);
+        renderStep();
+      });
+
+      document.getElementById("btnNext").addEventListener("click", () => {
+        const s = getSelected();
+        if(s === null){
+          showToast("Chưa chọn đáp án", "Bạn chọn 1 đáp án để tiếp tục nhé.");
+          return;
+        }
+        const item = testItems[state.idx];
+        state.answers[item.id] = s;
+
+        if(state.idx === testItems.length - 1){
+          renderResult();
+          return;
+        }
+        state.idx += 1;
+        renderStep();
+      });
+
+      renderStep();
+    }
+
+    document.addEventListener("DOMContentLoaded", () => setupTest());
+  </script>
+
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      const form = document.getElementById("contactForm");
+      if(!form) return;
+      form.addEventListener("submit", (e) => {
+        e.preventDefault();
+        const data = Object.fromEntries(new FormData(form).entries());
+        const to = "prismproject.fptu@gmail.com";
+        const cc = "hanhndmss180820@fpt.edu.vn";
+        const subject = encodeURIComponent(`[Liên hệ] ${data.topic || "Khác"} | Êm Dạ Mode`);
+        const body = encodeURIComponent(
+          `Họ và tên: ${data.name || ""}\nEmail: ${data.email || ""}\nSĐT: ${data.phone || ""}\nChủ đề: ${data.topic || ""}\n\nNội dung:\n${data.message || ""}\n\nGửi từ trang Liên hệ (website Êm Dạ Mode).`
+        );
+        window.location.href = `mailto:${to}?cc=${encodeURIComponent(cc)}&subject=${subject}&body=${body}`;
+        showToast("Sắp mở email", "Trình duyệt sẽ mở ứng dụng email để bạn gửi liên hệ.");
+        form.reset();
+      });
+    });
+  </script>
+</body>
+</html>

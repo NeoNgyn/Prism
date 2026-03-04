@@ -1,4 +1,5 @@
-import type { FormEvent } from 'react';
+import { type FormEvent, useState } from 'react';
+import emailjs from '@emailjs/browser';
 
 interface ContactProps {
   showToast: (title: string, message: string) => void;
@@ -6,21 +7,67 @@ interface ContactProps {
 }
 
 export const Contact = ({ showToast, onNavigate }: ContactProps) => {
-  const handleContactSubmit = (e: FormEvent<HTMLFormElement>) => {
+  const [isSending, setIsSending] = useState(false);
+
+  const handleContactSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    const formData = new FormData(e.currentTarget);
+    
+    // Lưu reference của form trước khi vào async
+    const form = e.currentTarget;
+    
+    // Kiểm tra cấu hình EmailJS
+    const serviceId = import.meta.env.VITE_EMAILJS_SERVICE_ID;
+    const templateId = import.meta.env.VITE_EMAILJS_TEMPLATE_ID;
+    const publicKey = import.meta.env.VITE_EMAILJS_PUBLIC_KEY;
+
+    if (!serviceId || !templateId || !publicKey) {
+      showToast('Lỗi cấu hình', 'Vui lòng cấu hình EmailJS trong file .env. Xem hướng dẫn trong EMAILJS_SETUP.md');
+      return;
+    }
+
+    const formData = new FormData(form);
     const data = Object.fromEntries(formData.entries());
-    
-    const to = "prismproject.fptu@gmail.com";
-    const cc = "hanhndmss180820@fpt.edu.vn";
-    const subject = encodeURIComponent(`[Liên hệ] ${data.topic || "Khác"} | Êm Dạ Mode`);
-    const body = encodeURIComponent(
-      `Họ và tên: ${data.name}\nEmail: ${data.email}\nSố điện thoại: ${data.phone}\n\nNội dung:\n${data.message}`
-    );
-    
-    window.location.href = `mailto:${to}?cc=${cc}&subject=${subject}&body=${body}`;
-    showToast('Sắp mở email', 'Trình duyệt sẽ mở ứng dụng email để bạn gửi liên hệ.');
-    e.currentTarget.reset();
+
+    // Validate form
+    if (!data.name || !data.email || !data.message) {
+      showToast('Thiếu thông tin', 'Vui lòng điền đầy đủ họ tên, email và nội dung.');
+      return;
+    }
+
+    setIsSending(true);
+
+    try {
+      // Gửi email qua EmailJS
+      const templateParams = {
+        from_name: data.name,
+        reply_to: data.email,
+        phone: data.phone || 'Không cung cấp',
+        topic: data.topic || 'Khác',
+        message: data.message,
+      };
+
+      const response = await emailjs.send(
+        serviceId,
+        templateId,
+        templateParams,
+        publicKey
+      );
+
+      console.log('EmailJS Response:', response);
+
+      // EmailJS trả về status 200 khi thành công
+      if (response.status === 200 || response.text === 'OK') {
+        showToast('Gửi thành công!', 'Email của bạn đã được gửi. Chúng tôi sẽ phản hồi trong 24-48h.');
+        form.reset();
+      } else {
+        throw new Error('Email sending failed with status: ' + response.status);
+      }
+    } catch (error) {
+      console.error('EmailJS Error:', error);
+      showToast('Gửi thất bại', 'Có lỗi xảy ra khi gửi email. Vui lòng thử lại sau hoặc liên hệ trực tiếp qua số điện thoại.');
+    } finally {
+      setIsSending(false);
+    }
   };
 
   return (
@@ -58,17 +105,17 @@ export const Contact = ({ showToast, onNavigate }: ContactProps) => {
       <section className="section">
         <div className="panel pad">
           <h2 style={{ marginTop: 0 }}><span className="bar" aria-hidden="true"></span>Gửi liên hệ</h2>
-          <p className="sub">Form này dùng mailto để mở ứng dụng email trên máy của bạn và tạo sẵn nội dung gửi về email dự án.</p>
+          <p className="sub">Điền thông tin bên dưới và gửi trực tiếp. Email sẽ được gửi đến nguyenphucnhan2004@gmail.com.</p>
 
           <form onSubmit={handleContactSubmit}>
             <div className="form">
               <div className="field">
-                <label htmlFor="name">Họ và tên</label>
-                <input id="name" name="name" autoComplete="name" placeholder="Nguyễn Văn A" />
+                <label htmlFor="name">Họ và tên <span style={{color: 'red'}}>*</span></label>
+                <input id="name" name="name" autoComplete="name" placeholder="Nguyễn Văn A" required />
               </div>
               <div className="field">
-                <label htmlFor="email">Email</label>
-                <input id="email" name="email" type="email" autoComplete="email" placeholder="you@example.com" />
+                <label htmlFor="email">Email <span style={{color: 'red'}}>*</span></label>
+                <input id="email" name="email" type="email" autoComplete="email" placeholder="you@example.com" required />
               </div>
               <div className="field">
                 <label htmlFor="phone">Số điện thoại</label>
@@ -84,20 +131,20 @@ export const Contact = ({ showToast, onNavigate }: ContactProps) => {
                 </select>
               </div>
               <div className="field" style={{ gridColumn: '1/-1' }}>
-                <label htmlFor="message">Nội dung</label>
-                <textarea id="message" name="message" placeholder="Bạn muốn nhắn gì cho tụi mình?"></textarea>
+                <label htmlFor="message">Nội dung <span style={{color: 'red'}}>*</span></label>
+                <textarea id="message" name="message" placeholder="Bạn muốn nhắn gì cho tụi mình?" required></textarea>
               </div>
             </div>
 
             <div style={{ marginTop: '12px', display: 'flex', gap: '10px', flexWrap: 'wrap' }}>
-              <button className="btn primary" type="submit">
+              <button className="btn primary" type="submit" disabled={isSending}>
                 <span className="icon" aria-hidden="true">
                   <svg viewBox="0 0 24 24" fill="none">
                     <path d="M4 6h16v12H4V6Z" stroke="currentColor" strokeWidth="2"/>
                     <path d="m4 7 8 6 8-6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
                   </svg>
                 </span>
-                Gửi liên hệ
+                {isSending ? 'Đang gửi...' : 'Gửi liên hệ'}
               </button>
               <a className="btn" href="#qna" onClick={(e) => { e.preventDefault(); onNavigate('qna'); }}>
                 <span className="icon" aria-hidden="true">
@@ -112,7 +159,7 @@ export const Contact = ({ showToast, onNavigate }: ContactProps) => {
 
           <div className="helper">
             <div className="dot" aria-hidden="true"></div>
-            <div>Nếu muốn gửi mail tự động không cần mail client, có thể tích hợp EmailJS hoặc Formspree ở bản final.</div>
+            <div>Email sẽ được gửi trực tiếp qua EmailJS. Đảm bảo đã cấu hình file .env (xem EMAILJS_SETUP.md).</div>
           </div>
         </div>
       </section>

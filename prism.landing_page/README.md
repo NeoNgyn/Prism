@@ -1,3 +1,72 @@
+# Prism Landing Page
+
+Landing page cho dự án Prism - Êm Dạ Mode được xây dựng với React + TypeScript + Vite.
+
+## Bắt đầu
+
+### Cài đặt dependencies
+
+```bash
+npm install
+```
+
+### Cấu hình EmailJS
+
+Để chức năng gửi email hoạt động, bạn cần cấu hình EmailJS:
+
+1. Copy file `.env.example` thành `.env`:
+   ```bash
+   cp .env.example .env
+   ```
+
+2. Làm theo hướng dẫn trong file `EMAILJS_SETUP.md` để:
+   - Đăng ký tài khoản EmailJS
+   - Tạo email service
+   - Tạo email template
+   - Lấy các thông tin cần thiết
+
+3. Cập nhật file `.env` với các giá trị thực:
+   ```env
+   VITE_EMAILJS_SERVICE_ID=your_service_id
+   VITE_EMAILJS_TEMPLATE_ID=your_template_id
+   VITE_EMAILJS_PUBLIC_KEY=your_public_key
+   ```
+
+### Chạy development server
+
+```bash
+npm run dev
+```
+
+### Build production
+
+```bash
+npm run build
+```
+
+### Preview production build
+
+```bash
+npm run preview
+```
+
+## Tính năng
+
+- ✅ Responsive design
+- ✅ Multiple pages: Home, About, Q&A, Test, Contact
+- ✅ Form liên hệ với EmailJS integration
+- ✅ Toast notifications
+- ✅ Test wizard với câu hỏi đa dạng
+
+## Tech Stack
+
+- React 19.2
+- TypeScript
+- Vite 7
+- EmailJS (cho form liên hệ)
+
+---
+
 # React + TypeScript + Vite
 
 This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.

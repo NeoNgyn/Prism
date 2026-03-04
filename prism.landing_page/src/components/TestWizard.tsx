@@ -55,23 +55,18 @@ export const TestWizard = ({ items, onComplete }: TestWizardProps) => {
 
     if (totalScore >= 23) {
       resultTitle = "🔴 G-TYPE CRITICAL";
-      resultDesc = "Có dấu hiệu cảnh báo nghiêm trọng.";
-      resultTip = "Khuyến nghị: đi khám y tế càng sớm càng tốt.";
+      resultDesc = "Có dấu hiệu cảnh báo bệnh lý dạ dày hoặc nguy cơ biến chứng. Không nên chỉ tự theo dõi tại nhà.";
+      resultTip = "Khuyến nghị hành động: Nên khám chuyên khoa tiêu hoá. Đi khám sớm nếu đau nhiều, sụt cân, nôn, hoặc triệu chứng kéo dài. Không tự ý dùng thuốc kéo dài.";
       cls = "high";
-    } else if (totalScore >= 16) {
-      resultTitle = "🟠 G-TYPE WARNING";
-      resultDesc = "Nguy cơ viêm dạ dày hoặc trào ngược đáng chú ý.";
-      resultTip = "Gợi ý: nên đi khám chuyên khoa tiêu hoá để kiểm tra.";
-      cls = "mid";
     } else if (totalScore >= 8) {
-      resultTitle = "🟡 G-TYPE SENSITIVE";
-      resultDesc = "Dạ dày nhạy cảm, có dấu hiệu rối loạn chức năng tiêu hoá.";
-      resultTip = "Gợi ý: điều chỉnh chế độ ăn, theo dõi triệu chứng 2–4 tuần.";
+      resultTitle = "🟠 G-TYPE WARNING";
+      resultDesc = "Dạ dày đang nhạy cảm hoặc có dấu hiệu rối loạn chức năng tiêu hoá mức nhẹ–trung bình.";
+      resultTip = "Gợi ý hành động: Điều chỉnh chế độ ăn (ít cay, ít dầu, đúng giờ). Giảm stress và thức khuya. Theo dõi triệu chứng trong 2–4 tuần. Nếu không cải thiện → nên đi khám.";
       cls = "mid";
     } else {
       resultTitle = "🟢 G-TYPE BALANCED";
-      resultDesc = "Dạ dày đang tương đối ổn định. Có thể có khó chịu nhẹ do lối sống.";
-      resultTip = "Gợi ý: duy trì giờ ăn đều, giảm stress, hạn chế chất kích thích.";
+      resultDesc = "Dạ dày đang trong trạng thái tương đối ổn định. Có thể có khó chịu nhẹ do lối sống hoặc ăn uống thất thường.";
+      resultTip = "Gợi ý hành động: Duy trì giờ ăn đều. Hạn chế chất kích thích (cà phê, rượu, thuốc lá). Ngủ đủ và giảm stress. Theo dõi nếu triệu chứng tăng lên.";
       cls = "low";
     }
 
@@ -103,8 +98,10 @@ export const TestWizard = ({ items, onComplete }: TestWizardProps) => {
 
       <div className="step">
         <div className="q-title">{currentItem.q}</div>
-        <div className="options">
-          {currentItem.opts.map(([label, value], idx) => (
+        <p className="small" style={{ marginTop: '8px', marginBottom: '16px', color: 'var(--muted)' }}>
+          Chọn đáp án giống bạn nhất trong 2 tuần gần đây.
+        </p>
+        <div className="options">{currentItem.opts.map(([label, value], idx) => (
             <label key={idx} className="opt">
               <input 
                 type="radio" 

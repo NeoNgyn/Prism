@@ -9,7 +9,7 @@ export const testItems: TestItem[] = [
       ["Không bao giờ", 0],
       ["Thỉnh thoảng (1–2 lần/tuần)", 1],
       ["Khá thường xuyên (3–5 lần/tuần)", 2],
-      ["Gần như mỗi ngày hoặc dữ dội", 3]
+      ["Thường xuyên (≥ 5 lần/tuần)", 3]
     ]
   },
   {
@@ -17,9 +17,9 @@ export const testItems: TestItem[] = [
     tag: "PHẦN 1 — TRIỆU CHỨNG CẢM NHẬN",
     q: "Bạn có bị đầy hơi, chướng bụng sau ăn?",
     opts: [
-      ["Hiếm khi", 0],
-      ["Thỉnh thoảng", 1],
-      ["Thường xuyên", 2],
+      ["Hiếm khi (1 lần/2 tuần)", 0],
+      ["Thỉnh thoảng (1–2 lần/tuần)", 1],
+      ["Thường xuyên (≥ 5 lần/tuần)", 2],
       ["Hầu như sau mọi bữa ăn", 3]
     ]
   },
@@ -29,8 +29,8 @@ export const testItems: TestItem[] = [
     q: "Ợ chua hoặc trào ngược xảy ra mức nào?",
     opts: [
       ["Không có", 0],
-      ["Thỉnh thoảng", 1],
-      ["Nhiều lần/tuần", 2],
+      ["Thỉnh thoảng (1–2 lần/tuần)", 1],
+      ["Nhiều lần/tuần (3–5 lần/tuần)", 2],
       ["Hàng ngày hoặc ảnh hưởng giấc ngủ", 3]
     ]
   },
@@ -40,9 +40,9 @@ export const testItems: TestItem[] = [
     q: "Buồn nôn hoặc khó tiêu kéo dài?",
     opts: [
       ["Không", 0],
-      ["Ít khi", 1],
-      ["Hay gặp", 2],
-      ["Rất thường xuyên", 3]
+      ["Thỉnh thoảng (1–2 lần/tuần)", 1],
+      ["Khá thường xuyên (3–5 lần/tuần)", 2],
+      ["Thường xuyên (≥ 5 lần/tuần)", 3]
     ]
   },
   {
@@ -51,9 +51,9 @@ export const testItems: TestItem[] = [
     q: "Thói quen ăn uống của bạn:",
     opts: [
       ["Điều độ, đúng giờ", 0],
-      ["Thỉnh thoảng bỏ bữa", 1],
-      ["Hay ăn thất thường, ăn nhanh", 2],
-      ["Rất thất thường, hay ăn khuya", 3]
+      ["Thỉnh thoảng bỏ bữa (1–2 ngày/tuần)", 1],
+      ["Hay ăn thất thường, ăn nhanh (3–5 ngày/tuần)", 2],
+      ["Rất thất thường, hay ăn khuya (≥ 5 ngày/tuần)", 3]
     ]
   },
   {
@@ -61,10 +61,10 @@ export const testItems: TestItem[] = [
     tag: "PHẦN 2 — YẾU TỐ NGUY CƠ LỐI SỐNG",
     q: "Căng thẳng tâm lý gần đây:",
     opts: [
-      ["Thấp", 0],
-      ["Trung bình", 1],
-      ["Cao", 2],
-      ["Rất cao kéo dài", 3]
+      ["Thấp (ít hoặc không ảnh hưởng sinh hoạt)", 0],
+      ["Trung bình (có nhưng vẫn kiểm soát được)", 1],
+      ["Cao (ảnh hưởng giấc ngủ/ăn uống 3–5 ngày/tuần)", 2],
+      ["Rất cao kéo dài (gần như mỗi ngày)", 3]
     ]
   },
   {
@@ -73,9 +73,9 @@ export const testItems: TestItem[] = [
     q: "Sử dụng chất kích thích (cà phê, rượu, thuốc lá):",
     opts: [
       ["Không", 0],
-      ["Ít", 1],
-      ["Thường xuyên", 2],
-      ["Hàng ngày mức cao", 3]
+      ["Ít (1–2 lần/tuần)", 1],
+      ["Thường xuyên (≥ 5 lần/tuần)", 2],
+      ["Hàng ngày mức cao (≥ 5 lần/tuần)", 3]
     ]
   },
   {
@@ -84,9 +84,9 @@ export const testItems: TestItem[] = [
     q: "Bạn có sụt cân không chủ ý?",
     opts: [
       ["Không", 0],
-      ["Giảm nhẹ", 1],
-      ["Giảm rõ", 2],
-      ["Giảm nhanh", 3]
+      ["Giảm nhẹ (≤ 2 kg)", 1],
+      ["Giảm rõ (2–5 kg)", 2],
+      ["Giảm nhanh (> 5 kg)", 3]
     ]
   },
   {
@@ -106,9 +106,9 @@ export const testItems: TestItem[] = [
     q: "Cơn đau dạ dày có làm bạn thức giấc ban đêm?",
     opts: [
       ["Không", 0],
-      ["Hiếm khi", 1],
-      ["Thỉnh thoảng", 2],
-      ["Thường xuyên", 3]
+      ["Hiếm khi (1 lần/2 tuần)", 1],
+      ["Thỉnh thoảng (1–2 lần/tuần)", 2],
+      ["Thường xuyên (≥ 3 lần/tuần)", 3]
     ]
   }
 ];

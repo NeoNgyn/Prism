@@ -13,7 +13,7 @@ export const Toast = ({ show, title, message, onClose }: ToastProps) => {
     if (show) {
       const timer = setTimeout(() => {
         onClose();
-      }, 5200);
+      }, 1000);
       return () => clearTimeout(timer);
     }
   }, [show, onClose]);

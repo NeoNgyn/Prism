@@ -6,9 +6,14 @@ import type { TestResult } from '../types';
 export const Test = () => {
   const [started, setStarted] = useState(false);
   const [result, setResult] = useState<TestResult | null>(null);
+  const [isTransitioning, setIsTransitioning] = useState(false);
 
   const handleStart = () => {
-    setStarted(true);
+    setIsTransitioning(true);
+    setTimeout(() => {
+      setStarted(true);
+      setIsTransitioning(false);
+    }, 300);
   };
 
   const handleComplete = (testResult: TestResult) => {
@@ -17,16 +22,52 @@ export const Test = () => {
   };
 
   const handleRestart = () => {
-    setResult(null);
-    setStarted(false);
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    setIsTransitioning(true);
+    setTimeout(() => {
+      setResult(null);
+      setStarted(false);
+      setIsTransitioning(false);
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }, 300);
+  };
+
+  // CSS animations inline
+  const fadeInStyle: React.CSSProperties = {
+    animation: 'fadeIn 0.5s ease-in-out',
+  };
+
+  const fadeOutStyle: React.CSSProperties = {
+    animation: 'fadeOut 0.3s ease-in-out',
+    opacity: 0,
   };
 
   // Intro Screen
   if (!started && !result) {
     return (
       <>
-        <section className="section" style={{ marginTop: '40px' }}>
+        <style>{`
+          @keyframes fadeIn {
+            from {
+              opacity: 0;
+              transform: translateY(20px);
+            }
+            to {
+              opacity: 1;
+              transform: translateY(0);
+            }
+          }
+          @keyframes fadeOut {
+            from {
+              opacity: 1;
+              transform: translateY(0);
+            }
+            to {
+              opacity: 0;
+              transform: translateY(-20px);
+            }
+          }
+        `}</style>
+        <section className="section" style={{ marginTop: '40px', ...(isTransitioning ? fadeOutStyle : fadeInStyle) }}>
           <div className="panel pad" style={{ textAlign: 'center', maxWidth: '700px', margin: '0 auto' }}>
             <p className="kicker" style={{ marginBottom: '20px' }}>
               <span className="badge">BÀI TEST ĐÁNH GIÁ</span>
@@ -58,8 +99,30 @@ export const Test = () => {
 
   return (
     <>
+      <style>{`
+        @keyframes fadeIn {
+          from {
+            opacity: 0;
+            transform: translateY(20px);
+          }
+          to {
+            opacity: 1;
+            transform: translateY(0);
+          }
+        }
+        @keyframes fadeOut {
+          from {
+            opacity: 1;
+            transform: translateY(0);
+          }
+          to {
+            opacity: 0;
+            transform: translateY(-20px);
+          }
+        }
+      `}</style>
       {!result && (
-        <section className="section">
+        <section className="section" style={isTransitioning ? fadeOutStyle : fadeInStyle}>
           <div className="panel pad" style={{ textAlign: 'center' }}>
             <h2 style={{ margin: '0 0 8px', fontSize: '20px', fontWeight: '700', letterSpacing: '0.5px' }}>
               BÀI TEST: MỨC ĐỘ "BÁO ĐỘNG" CỦA DẠ DÀY
@@ -74,8 +137,8 @@ export const Test = () => {
         </section>
       )}
 
-      <section className="section">
-        <div className="test-shell">
+      <section className="section" style={isTransitioning ? fadeOutStyle : fadeInStyle}>
+        <div className={result ? "test-shell" : "test-shell-single"}>
           <div className="panel pad">
             {!result ? (
               <TestWizard items={testItems} onComplete={handleComplete} />
@@ -134,24 +197,26 @@ export const Test = () => {
             )}
           </div>
 
-          <div className="panel pad">
-            <h2 style={{ marginTop: 0 }}><span className="bar" aria-hidden="true"></span>Phân nhóm G-Type</h2>
-            <p className="sub">Kết quả quy chiếu dựa trên mức độ nguy cơ vấn đề dạ dày.</p>
-            <div className="grid-2" style={{ marginTop: '12px' }}>
-              <div className="kpi">
-                <h3>🟢 Balanced (0–7)</h3>
-                <p style={{ fontSize: '12px' }}>Dạ dày ổn định. Duy trì giờ ăn đều, giảm stress, hạn chế chất kích thích.</p>
-              </div>
-              <div className="kpi">
-                <h3>🟠 Warning (8–22)</h3>
-                <p style={{ fontSize: '12px' }}>Dạ dày nhạy cảm hoặc có rối loạn nhẹ–trung bình. Điều chỉnh chế độ ăn, theo dõi 2–4 tuần.</p>
-              </div>
-              <div className="kpi">
-                <h3>🔴 Critical (23–30)</h3>
-                <p style={{ fontSize: '12px' }}>Có dấu hiệu cảnh báo nghiêm trọng. Nên khám chuyên khoa tiêu hoá càng sớm càng tốt.</p>
+          {result && (
+            <div className="panel pad">
+              <h2 style={{ marginTop: 0 }}><span className="bar" aria-hidden="true"></span>Phân nhóm G-Type</h2>
+              <p className="sub">Kết quả quy chiếu dựa trên mức độ nguy cơ vấn đề dạ dày.</p>
+              <div className="grid-2" style={{ marginTop: '12px' }}>
+                <div className="kpi">
+                  <h3>🟢 Balanced (0–7)</h3>
+                  <p style={{ fontSize: '12px' }}>Dạ dày ổn định. Duy trì giờ ăn đều, giảm stress, hạn chế chất kích thích.</p>
+                </div>
+                <div className="kpi">
+                  <h3>🟠 Warning (8–22)</h3>
+                  <p style={{ fontSize: '12px' }}>Dạ dày nhạy cảm hoặc có rối loạn nhẹ–trung bình. Điều chỉnh chế độ ăn, theo dõi 2–4 tuần.</p>
+                </div>
+                <div className="kpi">
+                  <h3>🔴 Critical (23–30)</h3>
+                  <p style={{ fontSize: '12px' }}>Có dấu hiệu cảnh báo nghiêm trọng. Nên khám chuyên khoa tiêu hoá càng sớm càng tốt.</p>
+                </div>
               </div>
             </div>
-          </div>
+          )}
         </div>
       </section>
     </>

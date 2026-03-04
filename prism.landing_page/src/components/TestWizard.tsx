@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import type { TestItem, TestState, TestResult } from '../types';
+import { Toast } from './Toast';
 import './TestWizard.css';
 
 interface TestWizardProps {
@@ -11,6 +12,7 @@ export const TestWizard = ({ items, onComplete }: TestWizardProps) => {
   const [state, setState] = useState<TestState>({ idx: 0, answers: {} });
   const [selectedOption, setSelectedOption] = useState<number | null>(null);
   const [score, setScore] = useState(0);
+  const [showToast, setShowToast] = useState(false);
 
   useEffect(() => {
     const currentAnswer = state.answers[items[state.idx]?.id];
@@ -30,7 +32,7 @@ export const TestWizard = ({ items, onComplete }: TestWizardProps) => {
 
   const handleNext = () => {
     if (selectedOption === null) {
-      alert('Vui lòng chọn một câu trả lời.');
+      setShowToast(true);
       return;
     }
 
@@ -74,22 +76,28 @@ export const TestWizard = ({ items, onComplete }: TestWizardProps) => {
   };
 
   const currentItem = items[state.idx];
-  const progress = Math.round(((state.idx) / items.length) * 100);
+  const progress = Math.round(((state.idx + 1) / items.length) * 100);
   const meterProgress = Math.round((score / 30) * 100);
 
   return (
     <div>
+      <Toast 
+        show={showToast} 
+        title="Vui lòng chọn một câu trả lời" 
+        message="Bạn cần chọn đáp án trước khi tiếp tục."
+        onClose={() => setShowToast(false)}
+      />
       <div className="progress" aria-label="Tiến độ bài test">
         <div style={{ width: `${progress}%`, height: '100%', background: 'linear-gradient(90deg, rgba(110,231,200,.8), rgba(122,166,255,.8))' }}></div>
       </div>
-      <div className="small" style={{ marginTop: '10px' }}>
+      <div style={{ marginTop: '12px', fontSize: '15px' }}>
         <b style={{ color: 'var(--mint)' }}>Câu {state.idx + 1}/{items.length}</b> • {currentItem.tag}
       </div>
 
-      <div className="meter" aria-label="Thang đánh giá (0-30 điểm)" style={{ marginTop: '12px' }}>
+      <div className="meter" aria-label="Thang đánh giá (0-30 điểm)" style={{ marginTop: '16px' }}>
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-          <div className="small">Điểm nguy cơ:</div>
-          <div className="small" style={{ fontWeight: 'bold' }}>{score}/30</div>
+          <div style={{ fontSize: '15px' }}>Điểm nguy cơ:</div>
+          <div style={{ fontSize: '15px', fontWeight: 'bold' }}>{score}/30</div>
         </div>
         <div className="line" style={{ marginTop: '8px' }}>
           <div className="fill" style={{ width: `${meterProgress}%` }}></div>
@@ -98,7 +106,7 @@ export const TestWizard = ({ items, onComplete }: TestWizardProps) => {
 
       <div className="step">
         <div className="q-title">{currentItem.q}</div>
-        <p className="small" style={{ marginTop: '8px', marginBottom: '16px', color: 'var(--muted)' }}>
+        <p style={{ marginTop: '8px', marginBottom: '16px', color: 'var(--muted)', fontSize: '14px' }}>
           Chọn đáp án giống bạn nhất trong 2 tuần gần đây.
         </p>
         <div className="options">{currentItem.opts.map(([label, value], idx) => (

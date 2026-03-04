@@ -138,7 +138,7 @@ export const Test = () => {
       )}
 
       <section className="section" style={isTransitioning ? fadeOutStyle : fadeInStyle}>
-        <div className="test-shell">
+        <div className={result ? "test-shell" : "test-shell-single"}>
           <div className="panel pad">
             {!result ? (
               <TestWizard items={testItems} onComplete={handleComplete} />
@@ -197,24 +197,26 @@ export const Test = () => {
             )}
           </div>
 
-          <div className="panel pad">
-            <h2 style={{ marginTop: 0 }}><span className="bar" aria-hidden="true"></span>Phân nhóm G-Type</h2>
-            <p className="sub">Kết quả quy chiếu dựa trên mức độ nguy cơ vấn đề dạ dày.</p>
-            <div className="grid-2" style={{ marginTop: '12px' }}>
-              <div className="kpi">
-                <h3>🟢 Balanced (0–7)</h3>
-                <p style={{ fontSize: '12px' }}>Dạ dày ổn định. Duy trì giờ ăn đều, giảm stress, hạn chế chất kích thích.</p>
-              </div>
-              <div className="kpi">
-                <h3>🟠 Warning (8–22)</h3>
-                <p style={{ fontSize: '12px' }}>Dạ dày nhạy cảm hoặc có rối loạn nhẹ–trung bình. Điều chỉnh chế độ ăn, theo dõi 2–4 tuần.</p>
-              </div>
-              <div className="kpi">
-                <h3>🔴 Critical (23–30)</h3>
-                <p style={{ fontSize: '12px' }}>Có dấu hiệu cảnh báo nghiêm trọng. Nên khám chuyên khoa tiêu hoá càng sớm càng tốt.</p>
+          {result && (
+            <div className="panel pad">
+              <h2 style={{ marginTop: 0 }}><span className="bar" aria-hidden="true"></span>Phân nhóm G-Type</h2>
+              <p className="sub">Kết quả quy chiếu dựa trên mức độ nguy cơ vấn đề dạ dày.</p>
+              <div className="grid-2" style={{ marginTop: '12px' }}>
+                <div className="kpi">
+                  <h3>🟢 Balanced (0–7)</h3>
+                  <p style={{ fontSize: '12px' }}>Dạ dày ổn định. Duy trì giờ ăn đều, giảm stress, hạn chế chất kích thích.</p>
+                </div>
+                <div className="kpi">
+                  <h3>🟠 Warning (8–22)</h3>
+                  <p style={{ fontSize: '12px' }}>Dạ dày nhạy cảm hoặc có rối loạn nhẹ–trung bình. Điều chỉnh chế độ ăn, theo dõi 2–4 tuần.</p>
+                </div>
+                <div className="kpi">
+                  <h3>🔴 Critical (23–30)</h3>
+                  <p style={{ fontSize: '12px' }}>Có dấu hiệu cảnh báo nghiêm trọng. Nên khám chuyên khoa tiêu hoá càng sớm càng tốt.</p>
+                </div>
               </div>
             </div>
-          </div>
+          )}
         </div>
       </section>
     </>

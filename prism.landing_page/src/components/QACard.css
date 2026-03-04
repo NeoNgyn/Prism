@@ -156,3 +156,49 @@
   background: rgba(255,255,255,0.10); 
   color: var(--text); 
 }
+
+/* Icon adjustments: use font-awesome <i> tags */
+.qa-front .qmark i {
+  font-size: 18px;
+  color: var(--text);
+}
+
+.meta .sources ul {
+  list-style: none;
+  padding-left: 0;
+  margin: 6px 0 0 10px;
+}
+.meta .sources li {
+  margin: 6px 0;
+}
+.meta .sources a {
+  color: var(--muted);
+  text-decoration: underline;
+  font-size: 13px;
+}
+
+/* Related questions: each on its own line */
+.related-label {
+  display: block;
+  font-size: 12px;
+  color: var(--muted);
+  margin-bottom: 6px;
+}
+.related-list {
+  list-style: none;
+  padding-left: 0;
+  margin: 0;
+  display: block;
+}
+.related-list li { margin-bottom: 8px; }
+.related-item {
+  width: 100%;
+  display: block;
+  text-align: left;
+  padding: 8px 10px;
+  border-radius: 8px;
+  border: 1px solid rgba(255,255,255,0.06);
+  background: rgba(255,255,255,0.03);
+  color: var(--muted);
+}
+.related-item:hover { background: rgba(255,255,255,0.06); color: var(--text); }

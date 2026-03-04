@@ -42,10 +42,7 @@ export const QACard = ({ item, allItems, onJumpTo }: QACardProps) => {
         <div className="qa-inner">
           <div className="qa-face qa-front">
             <div className="qmark">
-              <svg viewBox="0 0 24 24" fill="none" style={{ width: '20px', height: '20px' }}>
-                <path d="M12 16h.01M10 10a2 2 0 0 1 4 0c0 1.5-2 2-2 3" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/>
-                <path d="M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" stroke="currentColor" strokeWidth="2"/>
-              </svg>
+              <i className="fa-regular fa-circle-question" aria-hidden="true"></i>
             </div>
             <h3>{item.q}</h3>
             <p>{item.preview}</p>
@@ -54,39 +51,39 @@ export const QACard = ({ item, allItems, onJumpTo }: QACardProps) => {
           <div className="qa-face qa-back">
             <div className="qa-close">
               <button onClick={handleClose} data-close="true" aria-label="Đóng">
-                <svg viewBox="0 0 24 24" fill="none" style={{ width: '16px', height: '16px' }}>
-                  <path d="M6 6l12 12M18 6L6 18" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/>
-                </svg>
+                <i className="fa-solid fa-xmark" aria-hidden="true"></i>
               </button>
             </div>
             <h4>{item.q}</h4>
             <div className="ans" dangerouslySetInnerHTML={{ __html: item.a }}></div>
             <div className="meta">
-              <div style={{ marginTop: '10px' }}>
+              <div className="sources">
                 <strong>Nguồn:</strong>
-                {item.sources.map((src, idx) => (
-                  <span key={idx}>
-                    {idx > 0 && ', '}
-                    <a href={src.u} target="_blank" rel="noopener noreferrer">{src.t}</a>
-                  </span>
-                ))}
+                <ul>
+                  {item.sources.map((src, idx) => (
+                    <li key={idx}><a href={src.u} target="_blank" rel="noopener noreferrer">{src.t}</a></li>
+                  ))}
+                </ul>
               </div>
               {item.related.length > 0 && (
-                <div className="chip-row">
-                  <span style={{ fontSize: '12px', color: 'var(--muted)' }}>Câu hỏi liên quan:</span>
-                  {item.related.map((relId) => {
-                    const rel = getRelatedItem(relId);
-                    return rel ? (
-                      <button 
-                        key={relId}
-                        className="chipbtn" 
-                        onClick={(e) => handleJumpClick(e, relId)}
-                        data-jump={relId}
-                      >
-                        {rel.q}
-                      </button>
-                    ) : null;
-                  })}
+                <div className="related">
+                  <span className="related-label">Câu hỏi liên quan:</span>
+                  <ul className="related-list">
+                    {item.related.map((relId) => {
+                      const rel = getRelatedItem(relId);
+                      return rel ? (
+                        <li key={relId}>
+                          <button 
+                            className="chipbtn related-item" 
+                            onClick={(e) => handleJumpClick(e, relId)}
+                            data-jump={relId}
+                          >
+                            {rel.q}
+                          </button>
+                        </li>
+                      ) : null;
+                    })}
+                  </ul>
                 </div>
               )}
             </div>

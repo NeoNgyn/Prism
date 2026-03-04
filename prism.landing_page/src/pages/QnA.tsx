@@ -41,12 +41,12 @@ export const QnA = ({ showToast }: QnAProps) => {
     <>
       <section className="section">
         <div className="panel pad">
-          <p className="kicker"><span className="badge">Q&A có sẵn</span></p>
+          <p className="kicker"><span className="badge">Question & Answer</span></p>
           <h2 style={{ marginTop: 0 }}><span className="bar" aria-hidden="true"></span>Câu hỏi thường gặp</h2>
-          <p className="sub">
+          {/* <p className="sub">
             Danh sách câu hỏi có sẵn theo dạng thẻ lật. Bấm vào câu hỏi để lật sang câu trả lời.
             Trong mỗi câu trả lời luôn có nguồn tham khảo và related questions.
-          </p>
+          </p> */}
         </div>
       </section>
 
@@ -65,6 +65,8 @@ export const QnA = ({ showToast }: QnAProps) => {
           <h2 style={{ marginTop: 0 }}><span className="bar" aria-hidden="true"></span>Gửi câu hỏi cho dự án</h2>
           <p className="sub">Bạn không thấy câu hỏi của mình? Nhập câu hỏi tại đây, tụi mình sẽ phản hồi qua email.</p>
 
+          <div className="form-divider"></div>
+
           <form onSubmit={handleAskSubmit}>
             <div className="form">
               <div className="field">
@@ -77,20 +79,17 @@ export const QnA = ({ showToast }: QnAProps) => {
               </div>
             </div>
 
-            <div style={{ marginTop: '12px' }}>
-              <button className="btn primary" type="submit">
+            <div style={{ marginTop: '24px' }}>
+              <button className="btn primary qa-submit-btn" type="submit">
                 <span className="icon" aria-hidden="true">
-                  <svg viewBox="0 0 24 24" fill="none">
-                    <path d="M4 6h16v12H4V6Z" stroke="currentColor" strokeWidth="2"/>
-                    <path d="m4 7 8 6 8-6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-                  </svg>
+                  <i className="fa-regular fa-paper-plane" aria-hidden="true"></i>
                 </span>
-                Send
+                Gửi câu hỏi
               </button>
             </div>
 
-            <p className="small" style={{ marginTop: '10px' }}>
-              Nếu mailto không hoạt động, bạn có thể gửi trực tiếp tới <a href="mailto:prismproject.fptu@gmail.com">prismproject.fptu@gmail.com</a>.
+            <p className="small">
+              <span style={{color: "red"}}>*</span> Nếu gửi mail không hoạt động, bạn có thể gửi trực tiếp tới <a href="mailto:prismproject.fptu@gmail.com">prismproject.fptu@gmail.com</a>.
             </p>
           </form>
         </div>

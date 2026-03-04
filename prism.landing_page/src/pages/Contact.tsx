@@ -156,11 +156,6 @@ export const Contact = ({ showToast, onNavigate }: ContactProps) => {
               </a>
             </div>
           </form>
-
-          <div className="helper">
-            <div className="dot" aria-hidden="true"></div>
-            <div>Email sẽ được gửi trực tiếp qua EmailJS. Đảm bảo đã cấu hình file .env (xem EMAILJS_SETUP.md).</div>
-          </div>
         </div>
       </section>
     </>
